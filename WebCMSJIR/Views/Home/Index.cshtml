@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Page d'authentification";
+}
+
+<style>
+    .wrapper-page{
+        box-shadow: 10px 10px 10px rgba(0,0,0,0.75);
+        background-color: #1AA6B7;
+        padding: 40px;
+        min-width: 600px;
+    }
+    .panel_heading{
+        padding: 40px;
+        background: #D9ECF2;
+        opacity: 0.4;
+    }
+
+    .panel_heading:hover{
+        opacity: 0.6;
+    }
+    
+    .panel_heading h3{
+        text-align: center;
+        color: black;
+        opacity:1;
+        font-family: 'Times New Roman';
+        font-weight:bold;
+    }
+    .inline{
+        display: inline-block;
+        list-style: none;
+    }
+
+    .form-group {
+        padding-right: 50px;
+        padding-left: 50px;
+    }
+    .linkhome{
+        color: white;
+    }
+</style>
+
+<div class="wrapper-page">
+    <div class="panel_heading">
+        <h3>CENTRE MEDICO - SOCIAL <br />JIRAMA</h3>
+    </div>
+
+    <form class="form-horizontal m-t-20" method="post" action="">
+            <div class="form-group">
+                <select class="form-control input-lg" name="GROUPE" placeholder="Sélectionner la catégorie..." required="">
+                    <option value="#"> Selectionner la catégorie... </option>
+                    <option value="Administrateur">Administrateur</option>
+                    <option value="Accueil">Accueil</option>
+                    <option value="103">Infirmerie</option>
+                    <option value="101">Medecin</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <ul>
+                    <li class="inline"><i class="fa fa-user m-r-5"></i></li>
+                    <li class="inline"><input type="text" name="login" required="" onchange="RecupLog(this.value)" class="form-control" placeholder="Login"></li>
+                </ul>               
+            </div>
+            <div class="form-group">
+                <ul>
+                    <li class="inline"><i class="fa fa-lock m-r-5"></i></li>
+                    <li class="inline"><input type="password" name="mdp" class="form-control" placeholder="Mot de passe"></li>
+                </ul>
+                
+            </div>
+            <div class="form-group text-center">
+                <div class="col-xs-12">
+                    <input class="btn btn-success btn-lg w-lg " type="submit" name="CONNEXION" value="Connexion">
+                </div>
+            </div>
+            <div class="form-group m-t-30">
+                <div class="col-sm-7">
+                    <a class="linkhome" href="~/Home/Parametre"><i class="ion-settings"></i> Paramètre du compte</a>
+                </div>
+                <div class="col-sm-5 text-right">
+                    <a class="linkhome" href="~/Home/Configurer"><i class="ion-gear-a"></i> Configurer</a>
+                </div>
+            </div>
+    </form>
+        
+    </div>
+
+@if (TempData["message"] != null)
+{
+    <script>
+        alert('@TempData["message"]');
+    </script>
+}
+
+@if (TempData["TEXT"] != null)
+{
+    <script>
+        alert('@TempData["TEXT"]');
+    </script>
+}

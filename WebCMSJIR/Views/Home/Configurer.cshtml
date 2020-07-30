@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Page d'authentification";
+}
+
+<style>
+    .wrapper-page {
+        box-shadow: 10px 10px 10px rgba(0,0,0,0.75);
+        background-color: #1AA6B7;
+        padding: 40px;
+        min-width: 600px;
+    }
+    .panel_heading {
+        padding: 40px;
+        background: #D9ECF2;
+        opacity: 0.4;
+    }
+
+    .panel_heading:hover {
+         opacity: 0.6;
+    }
+
+    .panel_heading h3 {
+        text-align: center;
+        color: black;
+        opacity: 1;
+        font-family: 'Times New Roman';
+        font-weight: bold;
+    }
+
+    .linkhome {
+        color: white;
+    }
+
+</style>
+
+<div class="wrapper-page">
+    <div class="panel_heading">
+        <h3>CENTRE MEDICO - SOCIAL <br />JIRAMA</h3>
+    </div>
+
+    <div class="panel-body">
+        <form class="form-horizontal m-t-20" method="post" action="Configurer">
+
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                Il faut se connecter en tant qu' <b>Administrateur</b> pour pouvoir faire une modification !
+            </div>
+
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <label class="form-control input-lg" name="GROUPE">Administrateur</label>
+                </div>
+            </div>
+
+            <div class="form-group ">
+                <div class="col-xs-12">
+                    <input class="form-control input-lg " type="text" name="identifiant" required="" placeholder="Login">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <input class="form-control input-lg" type="password" name="mdp" required="" placeholder="Mot de passe">
+                </div>
+            </div>
+
+            <div class="form-group text-center">
+                <div class="col-xs-12">
+                    <input class="btn btn-success btn-lg w-lg " type="submit" name="CONNEXION" value="Connexion">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="form-group m-t-30">
+        <div class="col-sm-12 text-center">
+            <a class="linkhome" href="Index"><i class="ion-ios7-arrow-back"></i>  Retour à la page de connexion</a>
+        </div>
+    </div>
+</div>
+
+@if (TempData["message"] != null)
+{
+    <script>
+        alert('@TempData["message"]');
+    </script>
+}

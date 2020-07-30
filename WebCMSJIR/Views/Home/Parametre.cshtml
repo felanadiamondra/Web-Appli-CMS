@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "Parametre";
+}
+
+    <style>
+        .wrapper-page {
+            box-shadow: 10px 10px 10px rgba(0,0,0,0.75);
+            background-color: #1AA6B7;
+            padding: 40px;
+            min-width: 600px;
+        }
+
+        .panel{
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        .linkhome{
+            color: white;
+        }
+    </style>
+    <div class="wrapper-page">
+        <div class="panel panel-border panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">Paramètre du compte</h3>
+            </div>
+            <div class="panel-body">
+                <form class="form-horizontal m-t-20" method="post" action="~/Home/ConfirmeMdp">
+                    <div class="alert alert-info alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        Veuillez entrer votre identifiant et votre mot de passe actuel pour reconfigurer votre compte!
+                    </div>
+
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input class="form-control input-lg " type="text" name="ID" required="" placeholder="Identifant">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input class="form-control input-lg" type="password" name="Amdp" required="" placeholder="Ancien mot de passe">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input class="form-control input-lg" type="password" name="Nmdp" placeholder="Nouveau mot de passe">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input class="form-control input-lg" type="text" name="login" placeholder="Login">
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <div class="col-xs-12">
+                            <input class="btn btn-success btn-lg w-lg " type="submit" value="Valider">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="form-group m-t-30">
+            <div class="col-sm-12 text-center">
+                <a class="linkhome" href="Index"><i class="ion-ios7-arrow-back"></i>  Retour à la page de connexion</a>
+            </div>
+        </div>
+    </div>
+
+<!--Notification mofication-->
+@if (TempData["TEXT"] != null)
+{
+    <script>
+    alert('@TempData["TEXT"]');
+    </script>
+}

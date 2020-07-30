@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>@ViewData["Title"] - CMS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="~/bootstrap/images/favicon_1.ico">
+
+    <!-- Base Css Files -->
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Font Icons -->
+    <link href="~/bootstrap/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/bootstrap/assets/ionicon/css/ionicons.min.css" rel="stylesheet" />
+    <link href="~/bootstrap/css/material-design-iconic-font.min.css" rel="stylesheet">
+
+    <!-- animate css -->
+    <link href="~/bootstrap/css/animate.css" rel="stylesheet" />
+
+    <!-- Waves-effect -->
+    <link href="~/bootstrap/css/waves-effect.css" rel="stylesheet">
+
+    <!-- Custom Files -->
+    <link href="~/bootstrap/css/helper.css" rel="stylesheet" type="text/css" />
+    <link href="~/bootstrap/css/style.css" rel="stylesheet" type="text/css" />
+
+    <!-- Plugin Css - pour les tables-->
+    <link rel="stylesheet" href="~/bootstrap/assets/datatables/jquery.dataTables.min.css" />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="~/bootstrap/js/modernizr.min.js"></script>
+
+
+</head>
+<body>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/js/print.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/Utilisateur.js" asp-append-version="true"></script>
+    <script src="~/js/Medecin.js" asp-append-version="true"></script>
+    <script src="~/js/Societe.js" asp-append-version="true"></script>
+    <script src="~/js/Prestation.js" asp-append-version="true"></script>
+    <script src="~/js/Activite.js" asp-append-version="true"></script>
+    <script src="~/js/Certificat.js" asp-append-version="true"></script>
+    <script src="~/js/Home.js" asp-append-version="true"></script>
+    <script src="~/js/Rapport.js" asp-append-version="true"></script>
+    <script src="~/js/Frequentation.js" asp-append-version="true"></script>
+    <script src="~/js/Infirmerie.js" asp-append-version="true"></script>
+    <script src="~/js/disabled.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+
+    <script>
+        var resizefunc = [];
+    </script>
+
+    <!-- CUSTOM JS -->
+    <script src="~/bootstrap/js/jquery.app.js"></script>
+    <script src="~/bootstrap/js/jquery.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/bootstrap/js/waves.js"></script>
+    <script src="~/bootstrap/js/wow.min.js"></script>
+    <script src="~/bootstrap/js/jquery.nicescroll.js" type="text/javascript"></script>
+    <script src="~/bootstrap/js/jquery.scrollTo.min.js"></script>
+    <script src="~/bootstrap/assets/jquery-detectmobile/detect.js"></script>
+    <script src="~/bootstrap/assets/fastclick/fastclick.js"></script>
+    <script src="~/bootstrap/assets/jquery-slimscroll/jquery.slimscroll.js"></script>
+    <script src="~/bootstrap/assets/jquery-blockui/jquery.blockUI.js"></script>
+    <script src="~/bootstrap/assets/jquery-sparkline/jquery.sparkline.min.js"></script>
+
+    <!--form validation-->
+    <script type="text/javascript" src="~/bootstrap/assets/jquery.validate/jquery.validate.min.js"></script>
+
+    <!--form validation init-->
+    <script src="~/bootstrap/assets/jquery.validate/form-validation-init.js"></script>
+
+    <!--form validation-->
+    <script type="text/javascript" src="~/bootstrap/assets/jquery.validate/jquery.validate.min.js"></script>
+
+    <!--form validation init-->
+    <script src="~/bootstrap/assets/jquery.validate/form-validation-init.js"></script>
+
+    <!-- Datatable-->
+    <script src="~/bootstrap/assets/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/bootstrap/assets/datatables/dataTables.bootstrap.js"></script>
+
+    <!-- script pour le Datatable-->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datatable').dataTable();
+        });
+    </script>
+</body>
+</html>
+

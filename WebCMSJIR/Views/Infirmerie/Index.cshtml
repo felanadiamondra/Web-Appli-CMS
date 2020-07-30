@@ -1,0 +1,259 @@
+﻿
+<style>
+    .ion-checkmark{
+        color: green;
+    }
+
+    .form-group input{
+        border: 1px dotted dodgerblue;
+    }
+
+    #freqAttente{
+        border-left: 3px groove dodgerblue;
+    }
+</style>
+<link rel="stylesheet" type="text/css" href="~/css/montre.css"/>
+<link rel="stylesheet" type="text/css" href="~/css/topbar.css"/>
+<body class="fixed-left">
+    <!-- Begin page -->
+    <div id="wrapper">
+        <!---------------------------------------------------------------------------------- TOP MENU ----------------------------------------------------------------------------------->
+        <div class="topbar">
+            <div class="topbar-left">
+                <div class="text-center">
+                    <a href="#" class="logo"><i class="ion-medkit"></i> <span>CMS JIRAMA </span></a>
+                </div>
+            </div>
+            <nav class="navbar" id="navbartop">
+                <ul class="nav navbar-nav navbar-right pull-right" style="list-style:none">
+                    <li class="hidden-xs"><a id="btn-fullscreen"><i class="md md-crop-free"></i></a></li>
+                    <li><a href="~/Home/Index"><i class="md md-settings-power"></i></a></li>
+                </ul>
+            </nav>
+        </div>
+        <!--------------------------------------------------------------------------------- FIN TOP MENU------------------------------------------------------------------------------------------------------->
+        <!---------------------------------------------------------------------------------- MENU GAUCHE --------------------------------------------------------------------------------------------->
+
+        <div class="left side-menu">
+            <div class="sidebar-inner slimscrollleft">
+                <div class="clock">
+                    <div class="clock-face">
+                        <div class="hand hour-hand"></div>
+                        <div class="hand min-hand"></div>
+                        <div class="hand second-hand"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!------------------------------------------------------------------------------- FIN MENU GAUCHE --------------------------------------------------------------------------------->
+        <!----------------------------------------------------------------------------------- CONTENU --------------------------------------------------------------------------------------->
+
+        <div class="content-page">
+            <div class="content">
+                <div class="row">
+                    <div class="col-sm-4 col-md-3 offset-md-1 col-lg-4 offset-lg-0">
+                        <form method="post" action="~/Infirmerie/ValiderFreq">
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label>ID</label>
+                                    <input type="text" class="form-control" id="idPat" readonly>
+                                </div>
+                                <div class="form-group col-md-9">
+                                    <label>Nom Patient</label>
+                                    <input type="text" class="form-control" id="nomPat" readonly>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-2">
+                                    <label>Age</label>
+                                    <input type="text" class="form-control" id="agePat" readonly>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Sexe</label>
+                                    <select class="form-control" id="sexePat" disabled>
+                                        <option value="H">Homme</option>
+                                        <option value="F">Femme</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Prestation</label>
+                                    <input type="text" id="prestPat" class="form-control" readonly />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label>TEMP</label>
+                                    <input type="text" class="form-control" name="tempPat">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>TAMAX</label>
+                                    <input name="tamaxPat" class="form-control" type="text" />
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>TAMIN</label>
+                                    <input type="text" class="form-control" name="taminPat">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>PULS</label>
+                                    <input type="text" class="form-control" name="pulsPat" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label>POIDS</label>
+                                    <input type="text" class="form-control" name="poidsPat">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>TAILLE</label>
+                                    <input name="taillePat" class="form-control" type="text" />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>PC</label>
+                                    <input type="text" class="form-control" name="pcPat">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label>ALBUMINE</label>
+                                    <input type="text" class="form-control" name="albuminePat" />
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>GLYCEMIE</label>
+                                    <input type="text" class="form-control" name="glycemiePat" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- boutons -->
+                                <div class="col-lg-12">
+                                    <div class="btn-toolbar" role="toolbar">
+                                        <div class="pull-right">
+                                            <button type="button" class="btn btn-success waves-effect waves-light m-r-5"><i class="fa fa-floppy-o"></i></button>
+                                            <button type="reset" class="btn btn-danger waves-effect waves-light m-r-5"><i class="fa fa-times"></i></button>
+                                            <button type="submit" class="btn btn-purple waves-effect waves-light"> <span>Valider</span> <i class="fa fa-send m-l-10"></i> </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- fin boutons -->
+                        </form>
+                     </div>
+                    <div class="col-sm-8 col-md-7 offset-md-3 col-lg-8 offset-lg-0" id="freqAttente">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="panel-title p-t-30 m-t-12">Fréquentation(s) en attente :</h3>
+                            </div>
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4">
+                                <button class="btn btn-purple waves-effect waves-light" data-toggle="modal" data-target="#myModal">Liste d'attentes des Medecins</button>
+                            </div>
+                            <div class="panel panel-default m-t-15">
+                                <div class="panel-body p-t-30">
+                                    <table id="datatable" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>ID </th>
+                                                <th>Numero</th>
+                                                <th>Nom</th>
+                                                <th>Age</th>
+                                                <th>Sexe</th>
+                                                <th>Médecin</th>
+                                                <th>Préstation</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           @for(int i = 0; i < 3; i++) { 
+                                                <tr class="gradeU" onclick="getPatient(@i+1)">
+                                                    <td></td>
+                                                    <td>@i</td>
+                                                    <td>@i</td>
+                                                    <td>@i</td>
+                                                    <td>@i</td>
+                                                    <td>F</td>
+                                                    <td>@i</td>
+                                                    <td>@i</td>
+                                                    <td><i id="patientPris"></i></td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+       
+            </div> <!-- content page-->
+            <!-- Affiche liste fréquentation envoyé au Medecin en attente -->
+            <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width:65%;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h4 class="modal-title" id="myModalLabel">Liste d'attentes des Médecins</h4>
+                        </div>
+                        <div class="modal-body">
+                            <table id="datatable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>ID</th>
+                                        <th>Numero</th>
+                                        <th>Nom</th>
+                                        <th>Age</th>
+                                        <th>Sexe</th>
+                                        <th>Médecin</th>
+                                        <th>Préstation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for(int i=0;i<3;i++)
+                                    {
+                                        <tr class="gradeU">
+                                            <td>@i</td>
+                                            <td>@i</td>
+                                            <td>@i</td>
+                                            <td>@i</td>
+                                            <td>@i</td>
+                                            <td>@i</td>
+                                            <td>@i</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success waves-effect" data-dismiss="modal">Fermer</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+            <footer class="footer text-right">
+                2019 © CMS Jirama.
+            </footer>
+
+        </div> <!-- end content page -->
+    </div> <!-- END wrapper -->
+    <!--------------------------------------------------------------------------------------- FIN CONTENU ---------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------- SCRIPT JS ----------------------------------------------------------------------------------->
+
+</body>
+<script type="text/javascript" src="~/js/montre.js"></script>
+<script>
+    
+    function getPatient(nbr) {
+        const freqmala = document.getElementsByTagName('TR')[nbr].cells[1].textContent;
+        const nom = document.getElementsByTagName('TR')[nbr].cells[2].textContent;
+        const age = document.getElementsByTagName('TR')[nbr].cells[3].textContent;
+        const sexe = document.getElementsByTagName('TR')[nbr].cells[5].textContent;
+        const prest = document.getElementsByTagName('TR')[nbr].cells[6].textContent;
+
+        document.getElementById('idPat').value = freqmala;
+        document.getElementById('nomPat').value = nom;
+        document.getElementById('agePat').value = age;
+        document.getElementById('sexePat').value = sexe;
+        document.getElementById('prestPat').value = prest;
+    }
+</script>

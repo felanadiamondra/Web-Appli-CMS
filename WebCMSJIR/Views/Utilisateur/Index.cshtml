@@ -1,0 +1,224 @@
+﻿@using WebCMSJIR.Views.Utilisateur
+@using Oracle.ManagedDataAccess.Client
+@{
+    ViewData["Title"] = "Index";
+}
+@{
+    FonctionUser user1 = new FonctionUser();
+    OracleDataReader dr = user1.AfficheUser();
+}
+
+<!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<body class="fixed-left">
+    <!-- Begin page -->
+    <div id="wrapper">
+
+        <!---------------------------------------------------------------------------------- TOP MENU ----------------------------------------------------------------------------------->
+        <div class="topbar">
+            <!-- LOGO -->
+            <div class="topbar-left">
+                <div class="text-center">
+                    <a href="#" class="logo"><i class="md md-terrain"></i> <span>CMS JIRAMA </span></a>
+                </div>
+            </div>
+            <!-- Button mobile view to collapse sidebar menu -->
+            <div class="navbar navbar-default" role="navigation">
+                <div class="container">
+                    <div class="">
+                        <div class="pull-left">
+                            <button class="button-menu-mobile open-left">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <span class="clearfix"></span>
+                        </div>
+
+                        <ul class="nav navbar-nav navbar-right pull-right">
+                            <!--Full screen or not-->
+                            <li class="hidden-xs">
+                                <a href="#" id="btn-fullscreen" class="waves-effect waves-light"><i class="md md-crop-free"></i></a>
+                            </li>
+                            <li><a href="~/Home/Index"><i class="md md-settings-power"></i></a></li>
+                            <!--User-->
+                        </ul>
+                    </div>
+                    <!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <!--------------------------------------------------------------------------------- FIN TOP MENU------------------------------------------------------------------------------------------------------->
+        <!---------------------------------------------------------------------------------- MENU GAUCHE --------------------------------------------------------------------------------------------->
+
+        <div class="left side-menu">
+            <div class="sidebar-inner slimscrollleft">
+                <div class="user-details">
+                    <div class="pull-left">
+                        <a href="www.Jirama.mg" target="_blank" title="Consulter la page web de Jirama"><img src="~/bootstrap/images/logoJirama.jpg" class="thumb-md img-circle"></a>
+                    </div>
+                </div>
+                <!--- Divider -->
+                <div id="sidebar-menu">
+                    <ul>
+                        <li>
+                            <a href="~/Rapport/Index" class="waves-effect"><i class="md md-account-balance"></i><span> Rapport </span></a>
+                        </li>
+                        <li>
+                            <a href="~/Utilisateur/Index" class="waves-effect"><i class="ion ion-android-friends"></i><span> Utilisateur </span></a>
+                        </li>
+                        <li>
+                            <a href="~/Societe/Index" class="waves-effect"><i class="md md-contacts"></i><span> Société </span></a>
+                        </li>
+                        <li>
+                            <a href="~/Prestation/Index" class="waves-effect"><i class="md md-event-note"></i><span> Prestation </span></a>
+                        </li>
+                        <li>
+                            <a href="~/Activite/Index" class="waves-effect"><i class="md md-add-box"></i><span> Activité </span></a>
+                        </li>
+                        <li>
+                            <a href="~/Certificat/Index" class="waves-effect"><i class="md md-assignment"></i><span> Certificat </span></a>
+                        </li>
+                        <li>
+                            <a href="~/Frequentation/Index" class="waves-effect"><i class="md md-add-to-photos"></i><span> Fréquentation </span></a>
+                        </li>
+                        <li>
+                            <a href="~/Infirmerie/Index" class="waves-effect"><i class="md md-gamepad"></i><span> Infirmerie </span></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!------------------------------------------------------------------------------- FIN MENU GAUCHE --------------------------------------------------------------------------------->
+        <!----------------------------------------------------------------------------------- CONTENU --------------------------------------------------------------------------------------->
+
+        <div class="content-page">
+            <div class="content">
+                <div class="container">
+
+                    <!-- Page-Title -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4 class="pull-left page-title">Utilisateur</h4>
+                            <ol class="breadcrumb pull-right">
+                                <li>@System.DateTime.Today.ToLongDateString()</li>
+                                <li>@System.DateTime.Now.ToShortTimeString()</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="m-b-30">
+                                            <button class="btn btn-success waves-effect waves-lignt" onclick="AjoutUser()"> Nouveau <i class="fa fa-plus"></i></button>
+
+                                            <div class="col-lg-3">
+                                                <div class="panel-group panel-group-joined" id="accordion-test">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h4 class="panel-title">
+                                                                <a data-toggle="collapse" data-parent="#accordion-test" href="#collapseOne" class="collapsed">
+                                                                    <i class="fa fa-spin fa-cog"></i>  Mise à jour
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseOne" class="panel-collapse collapse">
+                                                            <div class="panel-body">
+                                                                <form name="ajax" class="cmxform form-horizontal tasi-form">
+                                                                    <div class="form-group ">
+                                                                        <div class="col-lg-10">
+                                                                            <input class="form-control" name="id" type="text" placeholder="Identifiant" required="">
+                                                                        </div>
+                                                                    </div>
+                                                                    <input class="btn btn-success" type="button" value="Modifier" onclick="GetCutomerName()">
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                                <table id="datatable" class="table table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Identifiant</th>
+                                                            <th>Nom</th>
+                                                            <th>Groupe</th>
+                                                            <th>Login</th>
+                                                            <th>Mots de passe</th>
+                                                            <th>Prestation</th>
+                                                            <th>Date saisie</th>
+                                                            <th>Statut</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @while (dr.Read())
+                                                        {
+                                                            <tr class="gradeU">
+                                                                <td>@dr.GetOracleValue(0)</td>
+                                                                <td>@dr.GetOracleValue(1)</td>
+                                                                <td>@dr.GetOracleValue(2)</td>
+                                                                <td>@dr.GetOracleValue(3)</td>
+                                                                <td>@dr.GetOracleValue(4)</td>
+                                                                <td>@dr.GetOracleValue(5)</td>
+                                                                <td>@dr.GetOracleValue(6)</td>
+                                                                <td>@dr.GetOracleValue(7)</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div> <!-- end row table-->
+                                    </div> <!-- end row-->
+                                </div> <!-- end panel body-->
+                            </div> <!-- end panel panel-default-->
+                        </div> <!-- end col-->
+                    </div> <!-- End Row -->
+                </div> <!-- end container -->
+                <div id="zonetext"></div> <!-- div affiche user-->
+            </div> <!-- content -->
+
+            <footer class="footer text-right">
+                2019 © CMS Jirama.
+            </footer>
+
+        </div> <!-- end content page -->
+    </div> <!-- END wrapper -->
+    <!--------------------------------------------------------------------------------------- FIN CONTENU ---------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------- SCRIPT JS ----------------------------------------------------------------------------------->
+    <script>
+        var resizefunc = [];
+    </script>
+
+</body>
+
+
+<!------------------------------------------------------------------------------------ NOTIFICATION ---------------------------------------------------------------------------------------->
+@if (TempData["message"] != null)
+{
+    <script>
+        alert('@TempData["message"]');
+    </script>
+}
+
+<!--Notification ajout-->
+@if (TempData["text"] != null)
+{
+    <script>
+        alert('@TempData["text"]');
+    </script>
+}
+
+<!--Notification suppression-->
+@if (TempData["confirm"] != null)
+{
+    <script>
+        alert('@TempData["confirm"]');
+    </script>
+}

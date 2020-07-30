@@ -1,0 +1,55 @@
+﻿@using WebCMSJIR.Views.Utilisateur
+@using Oracle.ManagedDataAccess.Client
+@using System.Data
+@{
+    ViewData["Title"] = "DeleteUser";
+    var id = ViewBag.Message;
+    FonctionUser user3 = new FonctionUser();
+    OracleDataReader sql = user3.AfficherUser(id);
+    sql.Read();
+}
+
+<div class="container">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading" id="modifier"><h3 class="panel-title">Suppression d'un utilisateur</h3></div>
+            <div class="panel-body">
+                <div class=" form">
+                    <form class="cmxform form-horizontal tasi-form" method="post" action="Utilisateur/Supprimer">
+
+                        <div class="form-group ">
+                            <label for="ID" class="control-label col-lg-2">Identifiant</label>
+                            <div class="col-lg-10">
+                                <input class=" form-control"  name="ID" type="text" value="@sql.GetString(0)">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="nom" class="control-label col-lg-2">Nom</label>
+                            <div class="col-lg-10">
+                                <input class=" form-control" id="nom" name="nom" type="text" value="@sql.GetString(1)">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="mdp" class="control-label col-lg-2">Mot de passe</label>
+                            <div class="col-lg-10">
+                                <input class="form-control " id="mdp" name="mdp" type="text" value="@sql.GetString(2)">
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="mdp" class="control-label col-lg-2">Catégorie</label>
+                            <div class="col-lg-10">
+                                <input class="form-control " id="cat" name="cat" type="text" value="@sql.GetString(3)">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input type="submit" value="Supprimer" class="btn btn-success ">
+                                <input type="reset" value="Annuler" class="btn btn-default">
+                            </div>
+                        </div>
+                    </form>
+                </div> <!-- .form -->
+            </div> <!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col -->
+</div><!-- content -->

@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewData["Title"] = "AddUser";
+}
+
+<div class="container">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading" id="ajout"><h3 class="panel-title">Ajouter un nouvel utilisateur</h3></div>
+            <div class="panel-body">
+                <div class=" form">
+                    <form class="cmxform form-horizontal tasi-form" action="~/Utilisateur/AjoutUser" method="post">
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-4">
+                                <div class="form-group ">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="control-label col-lg-2">Identifiant :</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input class=" form-control" id="ID" name="ID" type="text" required="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label class="control-label col-lg-2">Nom :</label>
+                                    <div class="col-lg-10">
+                                        <input class=" form-control" id="nom" name="nom" type="text" required="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-4">
+                                <div class="form-group ">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="control-label col-lg-2">Catégorie :</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <select class="form-control" name="groupe" required="" onchange="GetPrestation(this.value)">
+                                                <option value="#"></option>
+                                                <option value="Acceuil">Acceuil</option>
+                                                <option value="Administrateur">Administrateur</option>
+                                                <option value="201">Dentiste</option>
+                                                <option value="103">Infirmerie</option>
+                                                <option value="101">Médecin</option>
+                                                <option value="302">Echographie</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group ">
+                                    <label class="control-label col-lg-2">Prestation :</label>
+                                    <div id="AffichePrestation">
+                                        <div class="col-lg-10">
+                                            <select class="form-control" name="prest" required="">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group ">
+                            <label for="mdp" class="control-label col-lg-2">Login :</label>
+                            <div class="col-lg-9">
+                                <input class="form-control " name="login" type="text" required="">
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <label for="mdp" class="control-label col-lg-2">Mot de passe :</label>
+                            <div class="col-lg-9">
+                                <input class="form-control " id="mdp" name="mdp" type="text" required="">
+                            </div>
+                        </div>
+
+                        <div class="form-group ">
+                            <label for="groupe" class="control-label col-lg-2">Statut :</label>
+                            <div class="col-lg-9">
+                                <select class="form-control" name="statut" required="">
+                                    <option value="#"></option>
+                                    <option value="Actif">Actif</option>
+                                    <option value="Inactif">Inactif</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <input type="submit" value="Enregistrer" class="btn btn-success ">
+                                <a href="~/Utilisateur/Index"><input type="button" value="Annuler" class="btn btn-default waves-effect waves-lignt"></a>
+                            </div>
+                        </div>
+                    </form>
+                </div> <!-- form -->
+            </div> <!-- panel-body -->
+        </div> <!-- panel -->
+    </div> <!-- col -->
+</div><!-- container ajout-->

@@ -1,0 +1,19 @@
+﻿@using Oracle.ManagedDataAccess.Client
+@using WebCMSJIR.Views.Utilisateur
+@{
+    ViewData["Title"] = "AfficherPrestUser";
+    var code_act = ViewBag.message;
+    FonctionUser user = new FonctionUser();
+    OracleDataReader drPrest = user.getPrestation(code_act);
+}
+
+    <div class="col-md-10">
+        <select class="form-control" name="prest">
+            <option value=""></option>
+            @while (drPrest.Read())
+            {
+                <option value="@drPrest.GetOracleValue(0)">@drPrest.GetOracleValue(1)</option>
+            }
+        </select>
+    </div>
+
