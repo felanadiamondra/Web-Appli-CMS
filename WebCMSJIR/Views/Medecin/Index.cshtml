@@ -1,5 +1,12 @@
 ﻿@using Oracle.ManagedDataAccess.Client;
-
+@using WebCMSJIR.Views.Medecin;
+@{ 
+    var login = ViewBag.message;
+    int i = 0;
+    FonctionMed fMed = new FonctionMed();
+    OracleDataReader drLp = fMed.GetFreqMed(login);
+    OracleDataReader drLpt = fMed.ListeFreqT(login);
+} 
 <style>
     .col-md-1 input{
         border: 1px solid gray;
@@ -59,8 +66,8 @@
                                 <div class="row">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12 col-xs-12">
-                                            <table class="table table-striped table-dark">
-                                                <thead class=""> 
+                                            <table id="datatable" class="table table-striped table-bordered">
+                                                <thead> 
                                                     <tr>
                                                         <th>Numero</th>
                                                         <th>Nom</th>
@@ -78,6 +85,25 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @while (drLp.Read())
+                                                    {
+                                                        i= i+1;
+                                                        <tr class="gradeU" onclick="PatientMed(@i)">
+                                                            <td>@drLp.GetOracleValue(0)</td>
+                                                            <td>@drLp.GetOracleValue(1)</td>
+                                                            <td>@drLp.GetOracleValue(2)</td>
+                                                            <td>@drLp.GetOracleValue(3)</td>
+                                                            <td>@drLp.GetOracleValue(4)</td>
+                                                            <td>@drLp.GetOracleValue(5)</td>
+                                                            <td>@drLp.GetOracleValue(6)</td>
+                                                            <td>@drLp.GetOracleValue(7)</td>
+                                                            <td>@drLp.GetOracleValue(8)</td>
+                                                            <td>@drLp.GetOracleValue(9)</td>
+                                                            <td>@drLp.GetOracleValue(10)</td>
+                                                            <td>@drLp.GetOracleValue(11)</td>
+                                                            <td>@drLp.GetOracleValue(12)</td>
+                                                        </tr>
+                                                    }
                                                 </tbody>
                                             </table>
                                         </div>
@@ -154,7 +180,7 @@
                     <div class="col-md-9">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <form role="form" method="post" action="~/ConsultMedecin/updateFreq">
+                                <form role="form" method="post" action="~/Medecin/updateFreq">
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-md-1">
@@ -243,7 +269,7 @@
                 <div class="modal-body">
                     <table id="datatable" class="table table-striped table-bordered">
                         <thead>
-                            <tr>
+                            <tr class="gradeU" onclick="PatientMed(@i)">
                                 <th>ID</th>
                                 <th>Numero</th>
                                 <th>Nom</th>
@@ -254,8 +280,21 @@
                                 <th>Jour Repos</th>
                             </tr>
                         </thead>
-                        <tbody>
-                           
+                        <tbody> 
+                            @while (drLpt.Read())
+                            { 
+                            <tr class="gradeU">
+                                <td>@drLpt.GetOracleValue(0)</td>
+                                <td>@drLpt.GetOracleValue(1)</td>
+                                <td>@drLpt.GetOracleValue(2)</td>
+                                <td>@drLpt.GetOracleValue(3)</td>
+                                <td>@drLpt.GetOracleValue(4)</td>
+                                <td>@drLpt.GetOracleValue(5)</td>
+                                <td>@drLpt.GetOracleValue(6)</td>
+                                <td>@drLpt.GetOracleValue(7)</td>
+
+                            </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -281,3 +320,35 @@
         alert('@TempData["text"]');
     </script>
 }
+
+<script>
+    function PatientMed(nb) {
+        var num = document.getElementsByTagName('TR')[nb].cells[0].textContent;
+        var nom = document.getElementsByTagName('TR')[nb].cells[1].textContent;
+        var age = document.getElementsByTagName('TR')[nb].cells[2].textContent;
+        var prest = document.getElementsByTagName('TR')[nb].cells[3].textContent;
+        var nat = document.getElementsByTagName('TR')[nb].cells[4].textContent;
+        var temp = document.getElementsByTagName('TR')[nb].cells[5].textContent;
+        var tamax = document.getElementsByTagName('TR')[nb].cells[6].textContent;
+        var tamin = document.getElementsByTagName('TR')[nb].cells[7].textContent;
+        var puls = document.getElementsByTagName('TR')[nb].cells[8].textContent;
+        var poids = document.getElementsByTagName('TR')[nb].cells[9].textContent;
+        var pc = document.getElementsByTagName('TR')[nb].cells[10].textContent;
+        var alb = document.getElementsByTagName('TR')[nb].cells[11].textContent;
+        var gly = document.getElementsByTagName('TR')[nb].cells[12].textContent;
+        document.getElementById('num').value = num;
+        document.getElementById('nom').value = nom;
+        document.getElementById('age').value = age;
+        document.getElementById('nat').value = nat;
+        document.getElementById('prest').value = prest;
+        document.getElementById('temp').value = temp;
+        document.getElementById('tamin').value = tamin;
+        document.getElementById('tamax').value = tamax;
+        document.getElementById('puls').value = puls;
+        document.getElementById('poids').value = poids;
+        document.getElementById('pc').value = pc;
+        document.getElementById('alb').value = alb;
+        document.getElementById('gly').value = gly;
+    }
+
+</script>

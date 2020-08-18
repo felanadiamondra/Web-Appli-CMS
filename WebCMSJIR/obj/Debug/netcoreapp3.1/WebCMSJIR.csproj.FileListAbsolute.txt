@@ -507,3 +507,4 @@ D:\CMS\WebCMSJIR\WebCMSJIR\obj\Debug\netcoreapp3.1\Razor\Views\Utilisateur\Affic
 D:\CMS\WebCMSJIR\WebCMSJIR\obj\Debug\netcoreapp3.1\Razor\Views\Utilisateur\AfficheUser.cshtml.g.cs
 D:\CMS\WebCMSJIR\WebCMSJIR\obj\Debug\netcoreapp3.1\Razor\Views\Utilisateur\DeleteUser.cshtml.g.cs
 D:\CMS\WebCMSJIR\WebCMSJIR\obj\Debug\netcoreapp3.1\Razor\Views\Utilisateur\Index.cshtml.g.cs
+D:\CMS\WebCMSJIR\WebCMSJIR\obj\Debug\netcoreapp3.1\Razor\Views\Trash\Identifiant.cshtml.g.cs

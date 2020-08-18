@@ -6,7 +6,7 @@
     OracleDataReader drPrest = fFreq.ListePrest(codeAct);
 }
     <label>Prestation</label>
-    <select style="border: 1px solid dodgerblue" class="form-control" name="prest" onchange="ListeMed(this.value)">    
+    <select style="border: 1px solid dodgerblue" id="prest" class="form-control" name="prest" onchange="ListeMed(this.value)">    
     <option value="#"></option>
     @while (drPrest.Read())
     {

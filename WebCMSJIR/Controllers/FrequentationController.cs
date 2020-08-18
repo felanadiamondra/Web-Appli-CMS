@@ -65,7 +65,7 @@ namespace WebCMSJIR.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Fin", "Frequentation");
             }
         }
 

@@ -86,7 +86,7 @@
                                                 </div>
                                                 <div class="form-group col-md-6" id="afficheType">
                                                     <label for="typesoc">Type société</label>
-                                                    <input name="typesoc" id="typesoc" type="text" class="form-control" readonly />
+                                                    <input name="typeSte" id="typeSte" type="text" class="form-control" readonly />
                                                 </div>
                                             </div>
 
@@ -97,12 +97,12 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <label>Type Patient</label>
-                                                    <input id="type" name="typePat" type="text" style="border: 1px solid dodgerblue" placeholder="Type patient" class="form-control" disabled />
+                                                    <input id="type" name="typePat" type="text" style="border: 1px solid dodgerblue" placeholder="Type patient" class="form-control" />
 
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>Statut </label>
-                                                    <select id="statPat" style="border: 1px solid dodgerblue" class="form-control" name="etab" required="" disabled>
+                                                    <select id="statPat" style="border: 1px solid dodgerblue" class="form-control" name="etab" required="">
                                                         <option value="#"></option>
                                                         <option value="0">Actif</option>
                                                         <option value="4">Retraité</option>
@@ -111,22 +111,22 @@
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>Nature consultation</label>
-                                                    <select style="border: 1px solid dodgerblue" class="form-control" name="natConsul">
+                                                    <select style="border: 1px solid dodgerblue" id="natConsul" class="form-control" name="natConsul">
                                                         <option value="1">Normale</option>
-                                                        <option value="2">Conseil de santé</option>
-                                                        <option value="3">Visite Systématique</option>
+                                                        <option value="3">Conseil de santé</option>
+                                                        <option value="2">Visite Systématique</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="form-group col-md-4">
                                                     <label for="nomPat">Nom Patient</label>
-                                                    <input style="border: 1px solid dodgerblue" id="nom" type="text" name="nomPat" placeholder="Nom Patient" class="form-control" disabled />
+                                                    <input style="border: 1px solid dodgerblue" id="nom" type="text" name="nomPat" placeholder="Nom Patient" class="form-control" />
 
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label for="sexe">Sexe</label>
-                                                    <select style="border: 1px solid dodgerblue" id="sexe" name="sexe" class="custom-select-sm form-control" disabled>
+                                                    <select style="border: 1px solid dodgerblue" id="sexe" name="sexe" class="custom-select-sm form-control">
                                                         <option value="H">Homme</option>
                                                         <option value="F">Femme</option>
                                                     </select>
@@ -136,7 +136,7 @@
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="act">Activité</label>
-                                                    <select style="border: 1px solid dodgerblue" class="form-control" name="act" onchange="ListePrest(this.value)">
+                                                    <select style="border: 1px solid dodgerblue" class="form-control" id="act" name="act" onchange="ListePrest(this.value)">
                                                         @while (drAct.Read())
                                                         {
                                                             <option value="@drAct.GetOracleValue(0)">@drAct.GetOracleValue(1)</option>
@@ -147,11 +147,11 @@
                                             <div class="form-group">
                                                 <div class="form-group col-md-4">
                                                     <label>Date de naissance</label>
-                                                    <input type="date" style="border: 1px solid dodgerblue" id="datenais" name="dateNais" class="form-control" placeholder="Date de naissance" disabled />
+                                                    <input type="date" style="border: 1px solid dodgerblue" id="datenais" name="dateNais" class="form-control" placeholder="Date de naissance" />
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label for="age">Age</label>
-                                                    <input type="text" id="agePat" style="border: 1px solid dodgerblue" name="agePat" class="form-control" placeholder="Age" disabled />
+                                                    <input type="text" id="agePat" style="border: 1px solid dodgerblue" name="agePat" class="form-control" placeholder="Age" />
                                                 </div>
                                                 <div class="form-group col-md-2">
 
@@ -164,15 +164,15 @@
                                             <div class="form-group">
                                                 <div class="form-group col-md-4">
                                                     <label for="adr">Adresse</label>
-                                                    <input style="border: 1px solid dodgerblue" id="adr" type="text" class="form-control" name="adr" disabled />
+                                                    <input style="border: 1px solid dodgerblue" id="adr" type="text" class="form-control" name="adr" />
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>S.A :</label>
-                                                    <input style="border: 1px solid dodgerblue" type="text" class="form-control" name="SA" id="sa" required="" />
+                                                    <input style="border: 1px solid dodgerblue" type="text" class="form-control" name="SA" id="sa" />
                                                 </div>
                                                 <div class="form-group col-md-4" id="afficheMed">
                                                     <label>Medecin</label>
-                                                    <select style="border: 1px solid dodgerblue" class="form-control"></select>
+                                                    <select style="border: 1px solid dodgerblue" id="med" class="form-control"></select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -341,6 +341,53 @@
                     <div id="afficheJDE">
                     </div>
                 </div>
+                <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="width:75%;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title" id="myModalLabel">Liste d'attentes de l'Infirmerie</h4>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <table id="datatable" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Médecin</th>
+                                            <th>Numero</th>
+                                            <th>Nom</th>
+                                            <th>Age</th>
+                                            <th>Sexe</th>
+                                            <th>Activité</th>
+                                            <th>Préstation</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @while (drL.Read())
+                                        {
+                                            <tr class="gradeU">
+                                                <td>@drL.GetOracleValue(0)</td>
+                                                <td>@drL.GetOracleValue(1)</td>
+                                                <td>@drL.GetOracleValue(2)</td>
+                                                <td>@drL.GetOracleValue(3)</td>
+                                                <td>@drL.GetOracleValue(4)</td>
+                                                <td>@drL.GetOracleValue(5)</td>
+                                                <td>@drL.GetOracleValue(6)</td>
+                                                <td>@drL.GetOracleValue(7)</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success waves-effect" data-dismiss="modal">Fermer</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
             </div>
         </div>
     </div>

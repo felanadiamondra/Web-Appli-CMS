@@ -8,7 +8,7 @@
 }
 
 <label>Code médecin :</label>
-<select style="border: 1px solid dodgerblue" class="form-control" name="codeMed" onchange="CompteNum(this.value)">
+<select style="border: 1px solid dodgerblue" id="med" class="form-control" name="codeMed" onchange="CompteNum(this.value)">
     <option value="#"></option>
     @while (drMed.Read())
     {

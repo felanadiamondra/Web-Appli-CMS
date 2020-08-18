@@ -1,4 +1,12 @@
-﻿
+﻿@using WebCMSJIR.Views.Infirmerie; 
+@using Oracle.ManagedDataAccess.Client; 
+@{ 
+    int i = 0;
+    FonctionInf fInf = new FonctionInf();
+    OracleDataReader drInf = fInf.AfficheFreq();
+    OracleDataReader drL = fInf.ListeFreqAttente();
+
+} 
 <style>
     .ion-checkmark{
         color: green;
@@ -56,28 +64,28 @@
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label>ID</label>
-                                    <input type="text" class="form-control" id="idPat" readonly>
+                                    <input name="idPat" type="text" class="form-control" id="idPat" readonly>
                                 </div>
                                 <div class="form-group col-md-9">
                                     <label>Nom Patient</label>
-                                    <input type="text" class="form-control" id="nomPat" readonly>
+                                    <input name="nomPat" type="text" class="form-control" id="nomPat" readonly>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-2">
                                     <label>Age</label>
-                                    <input type="text" class="form-control" id="agePat" readonly>
+                                    <input name="agePat" type="text" class="form-control" id="agePat" readonly>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Sexe</label>
-                                    <select class="form-control" id="sexePat" disabled>
+                                    <select class="form-control" name="sexePat" id="sexePat" disabled>
                                         <option value="H">Homme</option>
                                         <option value="F">Femme</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>Prestation</label>
-                                    <input type="text" id="prestPat" class="form-control" readonly />
+                                    <input name="prestPat" type="text" id="prestPat" class="form-control" readonly />
                                 </div>
                             </div>
                             <div class="form-row">
@@ -158,23 +166,25 @@
                                                 <th>Sexe</th>
                                                 <th>Médecin</th>
                                                 <th>Préstation</th>
-                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                           @for(int i = 0; i < 3; i++) { 
-                                                <tr class="gradeU" onclick="getPatient(@i+1)">
-                                                    <td></td>
-                                                    <td>@i</td>
-                                                    <td>@i</td>
-                                                    <td>@i</td>
-                                                    <td>@i</td>
-                                                    <td>F</td>
-                                                    <td>@i</td>
-                                                    <td>@i</td>
-                                                    <td><i id="patientPris"></i></td>
-                                                </tr>
-                                            }
+                                           @while (drInf.Read())
+                                           {
+                                               i++;
+                                               <tr class="gradeU" onclick="getPatient(@i)">
+                                                   <td></td>
+                                                   <td>@drInf.GetOracleValue(0)</td>
+                                                   <td>@drInf.GetOracleValue(1)</td>
+                                                   <td>@drInf.GetOracleValue(2)</td>
+                                                   <td>@drInf.GetOracleValue(3)</td>
+                                                   <td>@drInf.GetOracleValue(4)</td>
+                                                   <td>@drInf.GetOracleValue(5)</td>
+                                                   <td>@drInf.GetOracleValue(6)</td>
+                                                   <td></td>
+                                               </tr>
+                                           }
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -208,18 +218,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @for(int i=0;i<3;i++)
+                                    @while (drL.Read())
                                     {
                                         <tr class="gradeU">
-                                            <td>@i</td>
-                                            <td>@i</td>
-                                            <td>@i</td>
-                                            <td>@i</td>
-                                            <td>@i</td>
-                                            <td>@i</td>
-                                            <td>@i</td>
+                                            <td></td>
+                                            <td>@drL.GetOracleValue(0)</td>
+                                            <td>@drL.GetOracleValue(1)</td>
+                                            <td>@drL.GetOracleValue(2)</td>
+                                            <td>@drL.GetOracleValue(3)</td>
+                                            <td>@drL.GetOracleValue(4)</td>
+                                            <td>@drL.GetOracleValue(5)</td>
+                                            <td>@drL.GetOracleValue(6)</td>
                                         </tr>
                                     }
+
                                 </tbody>
                             </table>
                         </div>
@@ -244,11 +256,11 @@
 <script>
     
     function getPatient(nbr) {
-        const freqmala = document.getElementsByTagName('TR')[nbr].cells[1].textContent;
+        const freqmala = document.getElementsByTagName('TR')[nbr].cells[0].textContent;
         const nom = document.getElementsByTagName('TR')[nbr].cells[2].textContent;
         const age = document.getElementsByTagName('TR')[nbr].cells[3].textContent;
-        const sexe = document.getElementsByTagName('TR')[nbr].cells[5].textContent;
-        const prest = document.getElementsByTagName('TR')[nbr].cells[6].textContent;
+        const sexe = document.getElementsByTagName('TR')[nbr].cells[4].textContent;
+        const prest = document.getElementsByTagName('TR')[nbr].cells[5].textContent;
 
         document.getElementById('idPat').value = freqmala;
         document.getElementById('nomPat').value = nom;

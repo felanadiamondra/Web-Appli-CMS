@@ -5,15 +5,16 @@
     ViewData["Title"] = "Index";
 
 }
-@{ 
+@{
     FonctionFreq fFreq = new FonctionFreq();
     OracleDataReader drSte = fFreq.ListeSte();
     OracleDataReader drAct = fFreq.ListeAct();
     OracleDataReader drL = fFreq.FreqAttente();
+
 }
 
-<link rel="stylesheet" type="text/css" href="~/css/montre.css"/>
-<link rel="stylesheet" type="text/css" href="~/css/topbar.css"/>
+<link rel="stylesheet" type="text/css" href="~/css/montre.css" />
+<link rel="stylesheet" type="text/css" href="~/css/topbar.css" />
 <link rel="stylesheet" type="text/css" href="~/css/print.min.css">
 <!-------------------------------------------------------------------------------------------------------------------------------------->
 <body class="fixed-left">
@@ -75,6 +76,7 @@
                                                 <div class="form-group col-md-6">
                                                     <label>Nom Société</label>
                                                     <select id="ste" name="ste" class="form-control" onchange="AfficheType(this.value)">
+                                                        <option value="#"></option>
                                                         @while (drSte.Read())
                                                         {
                                                             <option value="@drSte.GetOracleValue(0)">@drSte.GetOracleValue(1)</option>
@@ -86,7 +88,8 @@
                                                 </div>
                                                 <div class="form-group col-md-6" id="afficheType">
                                                     <label for="typesoc">Type société</label>
-                                                    <input name="typesoc" id="typesoc" type="text" class="form-control" readonly />
+                                                    <input name="typeSte" id="typeSte" type="text" class="form-control" readonly />
+                                                 
                                                 </div>
                                             </div>
 
@@ -97,12 +100,12 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <label>Type Patient</label>
-                                                    <input id="type" name="typePat" type="text" style="border: 1px solid dodgerblue" placeholder="Type patient" class="form-control" disabled />
+                                                    <input id="type" name="typePat" type="text" style="border: 1px solid dodgerblue" placeholder="Type patient" class="form-control" />
 
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>Statut </label>
-                                                    <select id="statPat" style="border: 1px solid dodgerblue" class="form-control" name="etab" required="" disabled>
+                                                    <select id="statPat" style="border: 1px solid dodgerblue" class="form-control" name="etab" required="">
                                                         <option value="#"></option>
                                                         <option value="0">Actif</option>
                                                         <option value="4">Retraité</option>
@@ -111,7 +114,7 @@
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>Nature consultation</label>
-                                                    <select style="border: 1px solid dodgerblue" class="form-control" name="natConsul">
+                                                    <select style="border: 1px solid dodgerblue" id="natConsul" class="form-control" name="natConsul">
                                                         <option value="1">Normale</option>
                                                         <option value="3">Conseil de santé</option>
                                                         <option value="2">Visite Systématique</option>
@@ -121,13 +124,13 @@
                                             <div class="form-group">
                                                 <div class="form-group col-md-4">
                                                     <label for="nomPat">Nom Patient</label>
-                                                    <input style="border: 1px solid dodgerblue" id="nom" type="text" name="nomPat" placeholder="Nom Patient" class="form-control" disabled />
+                                                    <input style="border: 1px solid dodgerblue" id="nom" type="text" name="nomPat" placeholder="Nom Patient" class="form-control" />
 
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label for="sexe">Sexe</label>
-                                                    <select style="border: 1px solid dodgerblue" id="sexe" name="sexe" class="custom-select-sm form-control" disabled>
-                                                        <option value="H">Homme</option>
+                                                    <select style="border: 1px solid dodgerblue" id="sexe" name="sexe" class="custom-select-sm form-control">
+                                                        <option value="M">Homme</option>
                                                         <option value="F">Femme</option>
                                                     </select>
                                                 </div>
@@ -136,7 +139,7 @@
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="act">Activité</label>
-                                                    <select style="border: 1px solid dodgerblue" class="form-control" name="act" onchange="ListePrest(this.value)">
+                                                    <select style="border: 1px solid dodgerblue" class="form-control" id="act" name="act" onchange="ListePrest(this.value)">
                                                         @while (drAct.Read())
                                                         {
                                                             <option value="@drAct.GetOracleValue(0)">@drAct.GetOracleValue(1)</option>
@@ -147,11 +150,11 @@
                                             <div class="form-group">
                                                 <div class="form-group col-md-4">
                                                     <label>Date de naissance</label>
-                                                    <input type="date" style="border: 1px solid dodgerblue" id="datenais" name="dateNais" class="form-control" placeholder="Date de naissance" disabled />
+                                                    <input type="text" placeholder="jj-mm-aaaa" style="border: 1px solid dodgerblue" id="datenais" name="dateNais" class="form-control" placeholder="Date de naissance" />
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label for="age">Age</label>
-                                                    <input type="text" id="agePat" style="border: 1px solid dodgerblue" name="agePat" class="form-control" placeholder="Age" disabled />
+                                                    <input type="text" id="agePat" style="border: 1px solid dodgerblue" name="agePat" class="form-control" placeholder="Age" />
                                                 </div>
                                                 <div class="form-group col-md-2">
 
@@ -164,15 +167,15 @@
                                             <div class="form-group">
                                                 <div class="form-group col-md-4">
                                                     <label for="adr">Adresse</label>
-                                                    <input style="border: 1px solid dodgerblue" id="adr" type="text" class="form-control" name="adr" disabled />
+                                                    <input style="border: 1px solid dodgerblue" id="adr" type="text" class="form-control" name="adr" />
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>S.A :</label>
-                                                    <input style="border: 1px solid dodgerblue" type="text" class="form-control" name="SA" id="sa" required="" />
+                                                    <input style="border: 1px solid dodgerblue" type="text" class="form-control" name="SA" id="sa" />
                                                 </div>
                                                 <div class="form-group col-md-4" id="afficheMed">
                                                     <label>Medecin</label>
-                                                    <select style="border: 1px solid dodgerblue" class="form-control"></select>
+                                                    <select style="border: 1px solid dodgerblue" id="med" class="form-control"></select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -419,3 +422,20 @@
 <script type="text/javascript" src="~/js/jquery.min.js"></script>
 <script type="text/javascript" src="~/js/disabled.js"></script>
 <script type="text/javascript" src="~/js/montre.js"></script>
+<script>
+    var typeSte = document.getElementById('typeSte').value;
+    const matricule = document.querySelector('#mat');
+    const typePat = document.querySelector('#type');
+    const statut = document.querySelector('#statPat');
+    const natconsul = document.querySelector('#natConsul');
+    const nom = document.querySelector('#nom');
+    const activite = document.querySelector('#act');
+    const datenais = document.querySelector('#datenais');
+    const age = document.querySelector('#agePat');
+    const prest = document.querySelector('#prest');
+    const adr = document.querySelector('#adr');
+    const sa = document.querySelector('#sa');
+    const med = document.querySelector('#med');
+
+   
+</script>

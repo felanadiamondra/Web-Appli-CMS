@@ -52,7 +52,7 @@ namespace WebCMSJIR.Controllers
             }
             else if (nbr == 1 && GROUPE.Equals(ac) && statut.Equals(act))
             {
-                return RedirectToAction("Index", "UserFrequentation");
+                return RedirectToAction("Index", "Frequentation");
             }
             else if (nbr == 1 && GROUPE.Equals(ac) && statut.Equals(inact))
             {
@@ -66,7 +66,7 @@ namespace WebCMSJIR.Controllers
             }
             else if (nbr == 1 && GROUPE.Equals(inf) && statut.Equals(act))
             {
-                return RedirectToAction("Index", "UserInfirmerie");
+                return RedirectToAction("Index", "Infirmerie");
             }
             else if (nbr == 1 && GROUPE.Equals(inf) && statut.Equals(inact))
             {
@@ -75,7 +75,7 @@ namespace WebCMSJIR.Controllers
             }
             else if (nbr == 1 && GROUPE.Equals(med) && statut.Equals(act))
             {
-                return RedirectToAction("Index", "ConsultMedecin" , new {Log = login});
+                return RedirectToAction("Index", "Medecin" , new {Log = login});
             }
             else if (nbr == 1 && GROUPE.Equals(med) && statut.Equals(inact))
             {

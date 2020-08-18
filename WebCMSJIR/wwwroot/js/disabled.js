@@ -128,16 +128,27 @@ function CompteNum(str) {
 }
 
 function Famille(nb) {
-    var check = document.getElementByTagName('TR')[nb].cells[0];
+    var dates = new Date();
+    var fullYear = dates.getFullYear();
     var nom = document.getElementsByTagName('TR')[nb].cells[4].textContent;
-    var sexe = document.getElementByTagName('TR')[nb].cells[5].textContent;
+    var sexe = document.getElementsByTagName('TR')[nb].cells[5].textContent;
     var sa = document.getElementsByTagName('TR')[nb].cells[6].textContent;
     var datenais = document.getElementsByTagName('TR')[nb].cells[7].textContent;
-    document.getElementById('nom').value = nom;
+
+
+    var usersYear = datenais.slice(6);
+    console.log(usersYear);
+    var age = fullYear - usersYear;
+   
+
     document.getElementById('sexe').value = sexe;
+    document.getElementById('nom').value = nom;
     document.getElementById('sa').value = sa;
     document.getElementById('datenais').value = datenais;
+    document.getElementById('agePat').value = age;
 }
+
+
 
         
     
