@@ -17,9 +17,15 @@
     .col-md-3 input{
         border: 1px solid gray;
     }
+    .col-md-4 input{
+        border: 1px solid gray;
+    }
     .list-group {
         border-top: 10px solid rgba(0,0,255,0.2);
         border-right: 10px solid rgba(0,0,255,0.2);
+    }
+    select{
+        border: 1px solid gray;
     }
 </style>
 <link rel="stylesheet" type="text/css" href="~/css/topbar.css"/>
@@ -187,18 +193,22 @@
                                                 <label class="control-label col-lg-2">Numero</label>
                                             </div>
                                             <div class="col-md-1">
-                                                <input type="number" class="form-control" name="num" id="num" readonly>
+                                                <input type="text" class="form-control" name="num" id="num" readonly>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <label class="control-label col-lg-12">N.C</label>
                                             </div>
                                             <div class="col-md-2">
-                                                <label class="control-label col-lg-12">Nature consultation</label>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <input type="text" class="form-control" id="nat" readonly>
+                                                <select disabled>
+                                                    <option value="1">Normale</option>
+                                                    <option value="2">Visite systematique</option>
+                                                    <option value="3">Conseil de santé</option>
+                                                </select>
                                             </div>
                                             <div class="col-md-1">
                                                 <label class="control-label col-lg-12">Nom</label>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-4">
                                                 <input type="text" class="form-control" id="nom" placeholder="Nom" readonly>
                                             </div>
                                             <div class="col-md-1">
@@ -223,7 +233,7 @@
                                                 <label class="control-label col-lg-12">Rendez-vous</label>
                                             </div>
                                             <div class="col-md-3">
-                                                <input type="date" class="form-control" name="daterdz" placeholder="jj/mm/aaaa hh:mn">
+                                                <input type="text" class="form-control" name="daterdz" placeholder="jj-mm-aaaa">
                                             </div>
                                         </div>
                                     </div>
@@ -336,10 +346,10 @@
         var pc = document.getElementsByTagName('TR')[nb].cells[10].textContent;
         var alb = document.getElementsByTagName('TR')[nb].cells[11].textContent;
         var gly = document.getElementsByTagName('TR')[nb].cells[12].textContent;
+        console.log(prest);
         document.getElementById('num').value = num;
         document.getElementById('nom').value = nom;
         document.getElementById('age').value = age;
-        document.getElementById('nat').value = nat;
         document.getElementById('prest').value = prest;
         document.getElementById('temp').value = temp;
         document.getElementById('tamin').value = tamin;
@@ -349,6 +359,6 @@
         document.getElementById('pc').value = pc;
         document.getElementById('alb').value = alb;
         document.getElementById('gly').value = gly;
+        document.getElementById('nat').value = nat;
     }
-
 </script>

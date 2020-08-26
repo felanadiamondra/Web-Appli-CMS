@@ -80,7 +80,7 @@ namespace WebCMSJIR.Controllers
             ViewBag.Message = codeMed;
             return View();
         }
-        public IActionResult AjoutFreq(string ste, string typeSte, string matr, string nomAG, string SA, int etab, string nomPat, int typePat, string dateNais, int age, char sexe, string adr, int numero, string natConsul, string codeMed, string act, string prest)
+        public IActionResult AjoutFreq(string ste, string typeSte, string matr, string nomAG, string SA, int etab, string nomPat, int typePat, string dateNais, int agePat, char sexe, string adr, int numero, string natConsul, string codeMed, string act, string prest)
         {
             DBConnect c = new DBConnect();
             OracleConnection conn = c.GetConnection();
@@ -96,7 +96,7 @@ namespace WebCMSJIR.Controllers
             {
                 OracleCommand cmd = new OracleCommand
                 {
-                    CommandText = "INSERT INTO FREQMALA_JDE(FREQMALA, NUMERO , MATR , ETAB , IDENTIFIANT  , STE , TYPE_CLI , TYPAT , CODE_ACT , CODE_PREST , NAT_CONSULT , SA , NOM , DNAIS , ADRESSE, SEXE, AGE, DFREQ ) VALUES('" + ide + "' , '" + numero + "' , '" + matr + "' ,'" + etab + "', '" + codeMed + "' , '" + ste + "' , '" + typeSte + "' , '" + typePat + "', '" + act + "' , '" + prest + "' , '" + natConsul + "' , '" + SA + "' , '" + nomPat + "',TO_DATE('" + dateNais + "', 'DD/MM/YYYY') , '" + adr + "' , '" + sexe + "', '" + age + "' , sysdate)",
+                    CommandText = "INSERT INTO FREQMALA_JDE(FREQMALA, NUMERO , MATR , ETAB , IDENTIFIANT  , STE , TYPE_CLI , TYPAT , CODE_ACT , CODE_PREST , NAT_CONSULT , SA , NOM , DNAIS , ADRESSE, SEXE, AGE, DFREQ ) VALUES('" + ide + "' , '" + numero + "' , '" + matr + "' ,'" + etab + "', '" + codeMed + "' , '" + ste + "' , '" + typeSte + "' , '" + typePat + "', '" + act + "' , '" + prest + "' , '" + natConsul + "' , '" + SA + "' , '" + nomPat + "',TO_DATE('" + dateNais + "', 'DD/MM/YYYY') , '" + adr + "' , '" + sexe + "', '" + agePat + "' , sysdate)",
                     Connection = conn,
                     CommandType = CommandType.Text
                 };
@@ -124,7 +124,7 @@ namespace WebCMSJIR.Controllers
             {
                 OracleCommand cmd = new OracleCommand
                 {
-                    CommandText = "INSERT INTO FREQMALA_JDE(FREQMALA, NUMERO , IDENTIFIANT , STE , TYPE_CLI , CODE_ACT , CODE_PREST , NAT_CONSULT, NOM, DNAIS , ADRESSE, SEXE, AGE, DFREQ ) VALUES('" + id + "' , '" + numero + "' , '" + codeMed + "' , '" + ste + "' , '" + typeSte + "' , '" + act + "' , '" + prest + "' , '" + natConsul + "' , '" + nomPat + "', TO_CHAR(TO_DATE('" + dateNais + "', 'DD/MM/YYYY'), 'DD/MM/YYYY') , '" + adr + "', '" + sexe + "', '" + age + "',  sysdate)",
+                    CommandText = "INSERT INTO FREQMALA_JDE(FREQMALA, NUMERO , IDENTIFIANT , STE , TYPE_CLI , CODE_ACT , CODE_PREST , NAT_CONSULT, NOM, DNAIS , ADRESSE, SEXE, AGE, DFREQ ) VALUES('" + id + "' , '" + numero + "' , '" + codeMed + "' , '" + ste + "' , '" + typeSte + "' , '" + act + "' , '" + prest + "' , '" + natConsul + "' , '" + nomPat + "', TO_CHAR(TO_DATE('" + dateNais + "', 'DD/MM/YYYY'), 'DD/MM/YYYY') , '" + adr + "', '" + sexe + "', '" + agePat + "',  sysdate)",
                     Connection = conn,
                     CommandType = CommandType.Text
                 };

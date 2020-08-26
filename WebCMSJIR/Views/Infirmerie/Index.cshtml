@@ -1,27 +1,24 @@
-﻿@using WebCMSJIR.Views.Infirmerie; 
-@using Oracle.ManagedDataAccess.Client; 
-@{ 
-    int i = 0;
+﻿@using WebCMSJIR.Views.Infirmerie;
+@using Oracle.ManagedDataAccess.Client;
+@{ int i = 0;
     FonctionInf fInf = new FonctionInf();
     OracleDataReader drInf = fInf.AfficheFreq();
-    OracleDataReader drL = fInf.ListeFreqAttente();
-
-} 
+    OracleDataReader drL = fInf.ListeFreqAttente(); }
 <style>
-    .ion-checkmark{
+    .ion-checkmark {
         color: green;
     }
 
-    .form-group input{
+    .form-group input {
         border: 1px dotted dodgerblue;
     }
 
-    #freqAttente{
+    #freqAttente {
         border-left: 3px groove dodgerblue;
     }
 </style>
-<link rel="stylesheet" type="text/css" href="~/css/montre.css"/>
-<link rel="stylesheet" type="text/css" href="~/css/topbar.css"/>
+<link rel="stylesheet" type="text/css" href="~/css/montre.css" />
+<link rel="stylesheet" type="text/css" href="~/css/topbar.css" />
 <body class="fixed-left">
     <!-- Begin page -->
     <div id="wrapper">
@@ -79,7 +76,7 @@
                                 <div class="form-group col-md-4">
                                     <label>Sexe</label>
                                     <select class="form-control" name="sexePat" id="sexePat" disabled>
-                                        <option value="H">Homme</option>
+                                        <option value="M">Homme</option>
                                         <option value="F">Femme</option>
                                     </select>
                                 </div>
@@ -143,7 +140,7 @@
                                 </div>
                             </div> <!-- fin boutons -->
                         </form>
-                     </div>
+                    </div>
                     <div class="col-sm-8 col-md-7 offset-md-3 col-lg-8 offset-lg-0" id="freqAttente">
                         <div class="row">
                             <div class="col-md-6">
@@ -169,21 +166,21 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                           @while (drInf.Read())
-                                           {
-                                               i++;
-                                               <tr class="gradeU" onclick="getPatient(@i)">
-                                                   <td></td>
-                                                   <td>@drInf.GetOracleValue(0)</td>
-                                                   <td>@drInf.GetOracleValue(1)</td>
-                                                   <td>@drInf.GetOracleValue(2)</td>
-                                                   <td>@drInf.GetOracleValue(3)</td>
-                                                   <td>@drInf.GetOracleValue(4)</td>
-                                                   <td>@drInf.GetOracleValue(5)</td>
-                                                   <td>@drInf.GetOracleValue(6)</td>
-                                                   <td></td>
-                                               </tr>
-                                           }
+                                            @while (drInf.Read())
+                                            {
+                                                i++;
+                                <tr class="gradeU" onclick="getPatient(@i)">
+                                    <td></td>
+                                    <td>@drInf.GetOracleValue(0)</td>
+                                    <td>@drInf.GetOracleValue(1)</td>
+                                    <td>@drInf.GetOracleValue(2)</td>
+                                    <td>@drInf.GetOracleValue(3)</td>
+                                    <td>@drInf.GetOracleValue(4)</td>
+                                    <td>@drInf.GetOracleValue(5)</td>
+                                    <td>@drInf.GetOracleValue(6)</td>
+                                    <td></td>
+                                </tr>
+}
 
                                         </tbody>
                                     </table>
@@ -191,81 +188,89 @@
                             </div>
                         </div>
                     </div>
-                    </div>
                 </div>
-       
-            </div> <!-- content page-->
-            <!-- Affiche liste fréquentation envoyé au Medecin en attente -->
-            <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog" style="width:65%;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h4 class="modal-title" id="myModalLabel">Liste d'attentes des Médecins</h4>
-                        </div>
-                        <div class="modal-body">
-                            <table id="datatable" class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>ID</th>
-                                        <th>Numero</th>
-                                        <th>Nom</th>
-                                        <th>Age</th>
-                                        <th>Sexe</th>
-                                        <th>Médecin</th>
-                                        <th>Préstation</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @while (drL.Read())
-                                    {
-                                        <tr class="gradeU">
-                                            <td></td>
-                                            <td>@drL.GetOracleValue(0)</td>
-                                            <td>@drL.GetOracleValue(1)</td>
-                                            <td>@drL.GetOracleValue(2)</td>
-                                            <td>@drL.GetOracleValue(3)</td>
-                                            <td>@drL.GetOracleValue(4)</td>
-                                            <td>@drL.GetOracleValue(5)</td>
-                                            <td>@drL.GetOracleValue(6)</td>
-                                        </tr>
-                                    }
+            </div>
 
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-success waves-effect" data-dismiss="modal">Fermer</button>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
+        </div> <!-- content page-->
+        <!-- Affiche liste fréquentation envoyé au Medecin en attente -->
+        <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width:65%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Liste d'attentes des Médecins</h4>
+                    </div>
+                    <div class="modal-body">
+                        <table id="datatable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>ID</th>
+                                    <th>Numero</th>
+                                    <th>Nom</th>
+                                    <th>Age</th>
+                                    <th>Sexe</th>
+                                    <th>Médecin</th>
+                                    <th>Préstation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @while (drL.Read())
+                                {
+                    <tr class="gradeU">
+                        <td></td>
+                        <td>@drL.GetOracleValue(0)</td>
+                        <td>@drL.GetOracleValue(1)</td>
+                        <td>@drL.GetOracleValue(2)</td>
+                        <td>@drL.GetOracleValue(3)</td>
+                        <td>@drL.GetOracleValue(4)</td>
+                        <td>@drL.GetOracleValue(5)</td>
+                        <td>@drL.GetOracleValue(6)</td>
+                    </tr>
+}
 
-            <footer class="footer text-right">
-                2019 © CMS Jirama.
-            </footer>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success waves-effect" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
-        </div> <!-- end content page -->
+        <footer class="footer text-right">
+            2019 © CMS Jirama.
+        </footer>
+
+    </div> <!-- end content page -->
     </div> <!-- END wrapper -->
     <!--------------------------------------------------------------------------------------- FIN CONTENU ---------------------------------------------------------------------------------->
     <!--------------------------------------------------------------------------------------- SCRIPT JS ----------------------------------------------------------------------------------->
 
 </body>
-<script type="text/javascript" src="~/js/montre.js"></script>
-<script>
-    
-    function getPatient(nbr) {
-        const freqmala = document.getElementsByTagName('TR')[nbr].cells[0].textContent;
-        const nom = document.getElementsByTagName('TR')[nbr].cells[2].textContent;
-        const age = document.getElementsByTagName('TR')[nbr].cells[3].textContent;
-        const sexe = document.getElementsByTagName('TR')[nbr].cells[4].textContent;
-        const prest = document.getElementsByTagName('TR')[nbr].cells[5].textContent;
+@if (TempData["message"] != null)
+{
+    <script>
+        alert('@TempData["message"]');
+    </script>
+}
 
-        document.getElementById('idPat').value = freqmala;
-        document.getElementById('nomPat').value = nom;
-        document.getElementById('agePat').value = age;
-        document.getElementById('sexePat').value = sexe;
-        document.getElementById('prestPat').value = prest;
-    }
-</script>
+<!--Notification ajout-->
+@if (TempData["text"] != null)
+{
+    <script>
+        alert('@TempData["text"]');
+    </script>
+}
+
+<!--Notification suppression-->
+@if (TempData["confirm"] != null)
+{
+    <script>
+        alert('@TempData["confirm"]');
+    </script>
+}
+
+<script type="text/javascript" src="~/js/montre.js"></script>
+<script type="text/javascript" src="~/js/Infirmerie.js"></script>

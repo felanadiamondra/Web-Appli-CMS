@@ -75,7 +75,7 @@
                                             <div class="form-group">
                                                 <div class="form-group col-md-6">
                                                     <label>Nom Société</label>
-                                                    <select id="ste" name="ste" class="form-control" onchange="AfficheType(this.value)">
+                                                    <select style="border: 2px solid pink" name="ste" class="form-control" onchange="AfficheType(this.value)">
                                                         <option value="#"></option>
                                                         @while (drSte.Read())
                                                         {
@@ -88,11 +88,11 @@
                                                 </div>
                                                 <div class="form-group col-md-6" id="afficheType">
                                                     <label for="typesoc">Type société</label>
-                                                    <input name="typeSte" id="typeSte" type="text" class="form-control" readonly />
+                                                    <input style="border: 2px solid pink" name="typeSte" id="typeSte" type="text" class="form-control" readonly />
                                                  
                                                 </div>
                                             </div>
-
+                                            
                                             <div class="form-group">
                                                 <div class="form-group col-md-3">
                                                     <label>Matricule</label>
