@@ -67,6 +67,9 @@
                     <!-- Page-Title -->
                     <div class="row">
                         <!-- Left sidebar -->
+                        <div id="responseAlert">
+                        </div>
+
                         <div class="col-md-8 col-lg-9">
                             <div class="panel panel-default m-t-20">
                                 <div class="panel-body p-t-30">
@@ -89,10 +92,10 @@
                                                 <div class="form-group col-md-6" id="afficheType">
                                                     <label for="typesoc">Type société</label>
                                                     <input style="border: 2px solid pink" name="typeSte" id="typeSte" type="text" class="form-control" readonly />
-                                                 
+
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="form-group">
                                                 <div class="form-group col-md-3">
                                                     <label>Matricule</label>
@@ -150,7 +153,7 @@
                                             <div class="form-group">
                                                 <div class="form-group col-md-4">
                                                     <label>Date de naissance</label>
-                                                    <input type="text" placeholder="jj-mm-aaaa" style="border: 1px solid dodgerblue" id="datenais" name="dateNais" class="form-control" placeholder="Date de naissance" />
+                                                    <input type="text" placeholder="jj-mm-aaaa" style="border: 1px solid dodgerblue" id="datenais" name="dateNais" class="form-control" />
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label for="age">Age</label>
@@ -185,6 +188,7 @@
                                                 </div>
                                             </div>
                                         </div> <!-- ToPrint -->
+
 
                                         <div class="row">
                                             <!-- boutons -->
@@ -423,19 +427,93 @@
 <script type="text/javascript" src="~/js/disabled.js"></script>
 <script type="text/javascript" src="~/js/montre.js"></script>
 <script>
-    var typeSte = document.getElementById('typeSte').value;
-    const matricule = document.querySelector('#mat');
-    const typePat = document.querySelector('#type');
-    const statut = document.querySelector('#statPat');
-    const natconsul = document.querySelector('#natConsul');
-    const nom = document.querySelector('#nom');
-    const activite = document.querySelector('#act');
-    const datenais = document.querySelector('#datenais');
-    const age = document.querySelector('#agePat');
-    const prest = document.querySelector('#prest');
-    const adr = document.querySelector('#adr');
-    const sa = document.querySelector('#sa');
-    const med = document.querySelector('#med');
+    function creerInstance() {
+        var req = null;
+        if (window.XMLHttpRequest) {
+            req = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            try {
+                req = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch (e) {
+                try {
+                    req = new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (e) {
+                    alert("XHR not created");
+                }
+            }
+        }
+        return req;
+    }
+    function getJDE(data) {
+        var element = document.getElementById("afficheJDE");
+        element.innerHTML = data;
+    }
+
+    function AfficheJDE(str) {
+        var xhr = creerInstance();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    document.getElementById('responseAlert').innerHTML= `<div class="panel-body">
+
+                                                                <div class="alert alert-success">
+                                                                    Liste famille prête
+                                                                </div>
+                                                            </div>`;
+                    getJDE(xhr.responseText);
+                }
+                else {
+                    document.getElementById("afficheJDE").innerHTML = "Error: returned status code " + xhr.status + " " + xhr.statusText;
+                }
+            }
+        };
+        xhr.open("GET", "/Frequentation/AfficherJDE?matricule=" + str, true);
+        xhr.send();
+    }
+
+    function Famille(nb) {
+        var check = document.getElementsByTagName('TR')[nb].cells[0];
+        let default_icon = ` `;
+        const btns = document.querySelectorAll('td > button');
+        btns.forEach(btn => {      
+            btn.innerHTML = default_icon;
+        });  
+ 
+        const icon = `<i class="fa fa-check"></i>`;
+        default_icon += icon;
+
+        var check = document.getElementsByTagName('TR')[nb].cells[0];
+        var btn = check.firstElementChild;
+        const btnclassname = btn.className;
+        console.log(btnclassname);
+        
+   
+        btn.innerHTML = default_icon;
+
+    
+        var dates = new Date();
+        var fullYear = dates.getFullYear();
+
+        var nom = document.getElementsByTagName('TR')[nb].cells[4].textContent;
+        var sexe = document.getElementsByTagName('TR')[nb].cells[6].textContent;
+        var sa = document.getElementsByTagName('TR')[nb].cells[7].textContent;
+        var datenais = document.getElementsByTagName('TR')[nb].cells[8].textContent;
+        var adresse = document.getElementsByTagName('TR')[nb].cells[5].textContent;
+
+
+        var usersYear = datenais.slice(6);
+        console.log(usersYear);
+        var age = fullYear - usersYear;
+
+
+        document.getElementById('sexe').value = sexe;
+        document.getElementById('nom').value = nom;
+        document.getElementById('sa').value = sa;
+        document.getElementById('datenais').value = datenais;
+        document.getElementById('agePat').value = age;
+        document.getElementById('adr').value = adresse;
+    }
+
 
    
 </script>

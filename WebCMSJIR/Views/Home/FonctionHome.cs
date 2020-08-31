@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using System.Globalization;
+using System.Text;
+using System.IO;
 using WebCMSJIR;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
@@ -38,7 +40,6 @@ namespace WebCMSJIR.Views.Home
 
         public string GetStatut(string login)
         {
-
             DBConnect c = new DBConnect();
             OracleConnection conn = c.GetConnection();
             conn.Open();

@@ -19,11 +19,11 @@ namespace WebCMSJIR
                 //" );USer ID=stageL2;password=stageL2";
 
                 data_path = "Data Source=(DESCRIPTION =" +
-                "(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.222.92)(PORT = 1521)))" +
+                "(ADDRESS_LIST =(ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.222.90)(PORT = 1521)))" +
                 "(CONNECT_DATA =" +
-                " (SERVICE_NAME = oracomm)" +
+                " (SERVICE_NAME = oratest)" +
                 " )" +
-                " );User ID=stagecms;password=stagecms";
+                " );User ID=cms;password=cms2016";
             }
             catch (Exception)
             {

@@ -5,6 +5,8 @@
     var matr = ViewBag.Message;
     FonctionFreq ag = new FonctionFreq();
     OracleDataReader dr = ag.GetJDE(matr);
+    OracleDataReader drS = ag.AffichageSexeA(matr);
+    drS.Read();
 
     FonctionFreq a = new FonctionFreq();
     OracleDataReader drA = a.GetAgentJDE(matr);
@@ -18,60 +20,64 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <p><u><i>Liste d'ayant droit(s) :</i></u></p> <br />
-                        <table id="datatable" class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>N. matricule </th>
-                                    <th>A. matricule</th>
-                                    <th>Nom agent</th>
-                                    <th>Nom famille</th>
-                                    <th>Sexe</th>
-                                    <th>S. A. </th>
-                                    <th>Date de naissance</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    @{
-                                        if (drA.HasRows)
-                                        {
-                                            if (drA.Read())
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <p><u><i>Liste d'ayant droit(s) :</i></u></p> <br />
+                            <table id="datatable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>N. matricule </th>
+                                        <th>A. matricule</th>
+                                        <th>Nom agent</th>
+                                        <th>Nom famille</th>
+                                        <th>Adresse</th>
+                                        <th>Sexe</th>
+                                        <th>S. A. </th>
+                                        <th>Date de naissance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        @{
+                                            if (drA.HasRows)
                                             {
-                                                <td><button class="btn btn-icon waves-effect waves-light btn-inverse m-b-5" onclick="Famille(@i)"><i class="fa fa-check"></i></button></td>
-                                                <td>@drA.GetOracleValue(0)</td>
-                                                <td>@drA.GetOracleValue(1)</td>
-                                                <td>@drA.GetOracleValue(2)</td>
-                                                <td>@drA.GetOracleValue(2)</td>
-                                                <td>@drA.GetOracleValue(3)</td>
-                                                <td>@drA.GetOracleValue(4)</td>
-                                                <td>@drA.GetOracleValue(5)</td>
+                                                if (drA.Read())
+                                                {
+                                                    <td class="uncheck"><button style="min-height: 35px; min-width: 40px" class="btn btn-icon waves-effect waves-light btn-info m-b-5" onclick="Famille(@i)"></button></td>
+                                                    <td>@drA.GetOracleValue(0)</td>
+                                                    <td>@drA.GetOracleValue(1)</td>
+                                                    <td>@drA.GetOracleValue(2)</td>
+                                                    <td>@drA.GetOracleValue(2)</td>
+                                                    <td>@drA.GetOracleValue(7)</td>
+                                                    <td>@drS.GetOracleValue(0)</td>
+                                                    <td>@drA.GetOracleValue(5)</td>
+                                                    <td>@drA.GetOracleValue(6)</td>
 
+                                                }
                                             }
                                         }
-                                    }
-                                </tr>
-                                @while (dr.Read())
-                                {
-                                    i = i + 1;
-                                    <tr class="gradeU">
-                                        <td><button class="btn btn-icon waves-effect waves-light btn-inverse m-b-5" onclick="Famille(@i)"><i class="fa fa-check"></i></button></td>
-                                        <td>@dr.GetOracleValue(0)</td>
-                                        <td>@dr.GetOracleValue(1)</td>
-                                        <td>@dr.GetOracleValue(2)</td>
-                                        <td>@dr.GetOracleValue(3)</td>
-                                        <td>@dr.GetOracleValue(4)</td>
-                                        <td>@dr.GetOracleValue(5)</td>
-                                        <td>@dr.GetOracleValue(6)</td>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
+                                    @while (dr.Read())
+                                    {
+                                        i = i + 1;
+                                        <tr class="gradeU">
+                                            <td class="uncheck"><button style="min-width: 40px; min-height:35px" class="btn btn-icon waves-effect waves-light btn-inverse m-b-5" onclick="Famille(@i)"></button></td>
+                                            <td>@dr.GetOracleValue(0)</td>
+                                            <td>@dr.GetOracleValue(1)</td>
+                                            <td>@dr.GetOracleValue(2)</td>
+                                            <td>@dr.GetOracleValue(3)</td>
+                                            <td>@dr.GetOracleValue(7)</td>
+                                            <td>@dr.GetOracleValue(4)</td>
+                                            <td>@dr.GetOracleValue(5)</td>
+                                            <td>@dr.GetOracleValue(6)</td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 </div> <!-- End Row -->

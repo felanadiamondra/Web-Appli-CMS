@@ -60,27 +60,6 @@ function ListeMed(str) {
     xhr.send();
 }
 
-function getJDE(data) {
-    var element = document.getElementById("afficheJDE");
-    element.innerHTML = data;
-}
-
-function AfficheJDE(str) {
-    var xhr = creerInstance();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
-                alert("Liste prête !")
-                getJDE(xhr.responseText);
-            }
-            else {
-                document.getElementById("afficheJDE").innerHTML = "Error: returned status code " + xhr.status + " " + xhr.statusText;
-            }
-        }
-    };
-    xhr.open("GET", "/Frequentation/AfficherJDE?matricule=" + str, true);
-    xhr.send();
-}
 
 
 //Ajouter type societe
@@ -125,27 +104,6 @@ function CompteNum(str) {
     };
     xhr.open("GET", "/Frequentation/AfficherNumero?codeMed=" + str, true);
     xhr.send();
-}
-
-function Famille(nb) {
-    var dates = new Date();
-    var fullYear = dates.getFullYear();
-    var nom = document.getElementsByTagName('TR')[nb].cells[4].textContent;
-    var sexe = document.getElementsByTagName('TR')[nb].cells[5].textContent;
-    var sa = document.getElementsByTagName('TR')[nb].cells[6].textContent;
-    var datenais = document.getElementsByTagName('TR')[nb].cells[7].textContent;
-
-
-    var usersYear = datenais.slice(6);
-    console.log(usersYear);
-    var age = fullYear - usersYear;
-   
-
-    document.getElementById('sexe').value = sexe;
-    document.getElementById('nom').value = nom;
-    document.getElementById('sa').value = sa;
-    document.getElementById('datenais').value = datenais;
-    document.getElementById('agePat').value = age;
 }
 
 

@@ -259,6 +259,38 @@ namespace WebCMSJIR.Views.Frequentation
             nb = dr.GetInt32(0);
             return nb;
         }
+        //Affichage sexe Agent
+        public OracleDataReader AffichageSexeA(string matr)
+        {
+            DBConnect c = new DBConnect();
+            OracleConnection conn = c.GetConnection();
+            conn.Open();
+            OracleTransaction trans = conn.BeginTransaction();
+            OracleCommand cmd = new OracleCommand
+            {
+                CommandText = "SELECT SEX FROM AGENT_TEMP WHERE MATR_NOUV = '" + matr + "' OR MATR = '" + matr + "' ",
+                Connection = conn,
+                CommandType = CommandType.Text
+            };
+            try
+            {
+                // Exécution de la requête     
+                dr = cmd.ExecuteReader();
+                // On soumet la requête au serveur: tout s'est bien déroulé , la requête est exécutée    
+                trans.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Une erreur est survenue: on ne valide pas la requête     
+                trans.Rollback();
+                Console.WriteLine("<body><script >alert('Requête non effectuée !!\nErreur: '" + ex.Message + "'');</script></body>");
+            }
+            finally
+            {     // Libération des ressources     
+                cmd.Dispose();
+            }
+            return dr;
+        }
 
         public int CompterAgentTemp(string matr)
         {
@@ -307,7 +339,13 @@ namespace WebCMSJIR.Views.Frequentation
             {
                 OracleCommand cmd = new OracleCommand
                 {
-                    CommandText = "SELECT YAAN8, YAOEMP , YAALPH , YADSC1 , YASEX , YAALPH1, CASE YATRDJ WHEN 0 THEN '-' ELSE  to_char(to_date(to_char(1900 + floor(YATRDJ/ 1000)),'YYYY') + mod(YATRDJ,1000) - 1, 'DD-MM-YYYY') END   FROM F55EMPME WHERE  YAAN8 = '" + matr + "' OR YAOEMP= '" + matr + "'",
+                    CommandText = "SELECT a.YAAN8, a.YAOEMP , a.YAALPH , a.YADSC1 ,' ' , a.YAALPH1, CASE a.YATRDJ WHEN 0 THEN '-' ELSE  to_char(to_date(to_char(1900 + floor(a.YATRDJ/ 1000)),'YYYY') + mod(a.YATRDJ,1000) - 1, 'DD-MM-YYYY') END ," +
+
+                    "b.ALADD1  FROM JIRDTA.F55EMPME a" +
+
+                    " left join JIRDTA.F0116 b on ltrim(a.YAAN8)=ltrim(b.ALAN8) " +
+
+                    "WHERE  a.YAAN8 = '" + matr + "' OR a.YAOEMP= '" + matr + "'",
                     Connection = conn,
                     CommandType = CommandType.Text
                 };
@@ -333,7 +371,13 @@ namespace WebCMSJIR.Views.Frequentation
             {
                 OracleCommand cmd = new OracleCommand
                 {
-                    CommandText = "SELECT YAAN8, YAOEMP , YAALPH , YADSC1 , YASEX , YAALPH1, CASE YATRDJ WHEN 0 THEN '-' ELSE  to_char(to_date(to_char(1900 + floor(YATRDJ/ 1000)),'YYYY') + mod(YATRDJ,1000) - 1, 'DD-MM-YYYY') END   FROM F55EMPME WHERE YADSC1 <> YAALPH AND YAAN8 = '" + matr + "' OR YAOEMP= '" + matr + "'",
+                    CommandText = "SELECT a.YAAN8, a.YAOEMP , a.YAALPH , a.YADSC1 , a.YASEX , a.YAALPH1, CASE a.YATRDJ WHEN 0 THEN '-' ELSE  to_char(to_date(to_char(1900 + floor(a.YATRDJ/ 1000)),'YYYY') + mod(a.YATRDJ,1000) - 1, 'DD-MM-YYYY') END," +
+
+                    "b.ALADD1  FROM JIRDTA.F55EMPME a" +
+
+                    " left join JIRDTA.F0116 b on ltrim(a.YAAN8)=ltrim(b.ALAN8) " +
+
+                    " WHERE a.YADSC1 <> a.YAALPH AND a.YAAN8 = '" + matr + "' OR a.YAOEMP = '" + matr + "'",
                     Connection = conn,
                     CommandType = CommandType.Text
                 };
@@ -361,13 +405,19 @@ namespace WebCMSJIR.Views.Frequentation
         //Affiche AGENT JDE ajax (table)
         public OracleDataReader GetAgentJDE(string matr)
         {
-            DBConnect c = new DBConnect();
-            OracleConnection conn = c.GetConnection();
+            DBConnectJDE c = new DBConnectJDE();
+            OracleConnection conn = c.GetConnectionJDE();
             conn.Open();
             OracleTransaction trans = conn.BeginTransaction();
             OracleCommand cmd = new OracleCommand
             {
-                CommandText = "SELECT MATR_NOUV, MATR , NOM , SEX , SA , TO_CHAR(DNAISS, 'DD-MM-YYYY') FROM AGENT_TEMP WHERE MATR_NOUV = '" + matr + "' OR MATR = '" + matr + "' ",
+                CommandText = "SELECT a.YAAN8, a.YAOEMP , a.YAALPH , a.YADSC1 , ' ', a.YAALPH1, CASE a.YATRDJ WHEN 0 THEN '-' ELSE  to_char(to_date(to_char(1900 + floor(a.YATRDJ/ 1000)),'YYYY') + mod(a.YATRDJ,1000) - 1, 'DD-MM-YYYY') END ," +
+
+                    "b.ALADD1  FROM JIRDTA.F55EMPME a" +
+
+                    " left join JIRDTA.F0116 b on ltrim(a.YAAN8)=ltrim(b.ALAN8) " +
+
+                    "WHERE  a.YAAN8 = '" + matr + "' OR a.YAOEMP= '" + matr + "'",
                 Connection = conn,
                 CommandType = CommandType.Text
             };
