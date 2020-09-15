@@ -1,0 +1,18 @@
+﻿@using Oracle.ManagedDataAccess.Client;
+@using System.Data;
+@using WebCMSJIR.Views.Frequentation;
+
+@{ 
+    FonctionFreq fFreq = new FonctionFreq();
+    OracleDataReader drMed = fFreq.GetMed();
+}
+
+<label for="field-4" class="control-label"> Nouveau Medecin</label>
+<select class="form-control" name="medP" id="">
+    <option value="#"></option>
+    @while (drMed.Read())
+    {
+        <option value="@drMed.GetOracleValue(0)">@drMed.GetOracleValue(1)</option>
+    }
+</select>
+<i class="fa fa-remove" onclick="ModifMed()"></i>

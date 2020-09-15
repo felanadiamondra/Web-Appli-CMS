@@ -6,7 +6,23 @@
     FonctionFreq ag = new FonctionFreq();
     OracleDataReader dr = ag.GetJDE(matr);
     OracleDataReader drS = ag.AffichageSexeA(matr);
+    OracleDataReader drDN = ag.AffichageDatenaisA(matr);
+    OracleDataReader drSce = ag.GetSce(matr);
+    OracleDataReader drSceF = ag.GetSceF(matr);
+    OracleDataReader drDir = ag.GetdirA(matr);
+    OracleDataReader drDirF = ag.GetdirF(matr);
+    OracleDataReader drLibDirF = ag.GetLibdirF(matr);
+    OracleDataReader drLibDirA = ag.GetLibdirA(matr);
+
+    // Curseur
     drS.Read();
+    drDN.Read();
+    drSce.Read();
+    drDir.Read();
+    drDirF.Read();
+    drSceF.Read();
+    drLibDirA.Read();
+    drLibDirF.Read();
 
     FonctionFreq a = new FonctionFreq();
     OracleDataReader drA = a.GetAgentJDE(matr);
@@ -34,6 +50,9 @@
                                         <th>Sexe</th>
                                         <th>S. A. </th>
                                         <th>Date de naissance</th>
+                                        <th>Service</th>
+                                        <th>Direction</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -51,8 +70,10 @@
                                                     <td>@drA.GetOracleValue(7)</td>
                                                     <td>@drS.GetOracleValue(0)</td>
                                                     <td>@drA.GetOracleValue(5)</td>
-                                                    <td>@drA.GetOracleValue(6)</td>
-
+                                                    <td>@drDN.GetOracleValue(0)</td>
+                                                    <td>@drSce.GetOracleValue(0)</td>
+                                                    <td>@drDir.GetOracleValue(0)</td>
+                                                    <td>@drLibDirA.GetOracleValue(0)</td>
                                                 }
                                             }
                                         }
@@ -70,7 +91,9 @@
                                             <td>@dr.GetOracleValue(4)</td>
                                             <td>@dr.GetOracleValue(5)</td>
                                             <td>@dr.GetOracleValue(6)</td>
-
+                                            <td>@drSceF.GetOracleValue(0)</td>
+                                            <td>@drDirF.GetOracleValue(0)</td>
+                                            <td>@drLibDirF.GetOracleValue(0)</td>
                                         </tr>
                                     }
                                 </tbody>

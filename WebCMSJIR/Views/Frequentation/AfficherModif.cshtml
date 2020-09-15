@@ -1,0 +1,61 @@
+﻿@using WebCMSJIR.Views.Frequentation 
+@using Oracle.ManagedDataAccess.Client
+@{
+    var matricule = ViewBag.Message;
+    var medecin = ViewBag.Medecin;
+    var typePat = ViewBag.Type;
+
+    FonctionFreq fFreq = new FonctionFreq();
+    OracleDataReader drU = fFreq.displayUpdateA(matricule, typePat, medecin);
+    drU.Read();
+
+}
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="field-1" class="control-label">A. Matricule</label>
+                <input type="text" name="Amat" class="form-control" id="field-1" value="@drU.GetOracleValue(4)" />
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="field-1" class="control-label">N. Matricule</label>
+                <input type="text" name="Nmat" class="form-control" id="field-1" value="@drU.GetOracleValue(3)" />
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="field-3" class="control-label">Nom</label>
+                <input type="text" name="nomP" class="form-control" id="field-3" value="@drU.GetOracleValue(2)">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="field-3" class="control-label">Type Patient</label>
+                <input type="text" name="typeP" class="form-control" id="field-3"value="@drU.GetOracleValue(5)">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group" id="modifMed">
+                <label for="field-4" class="control-label">Medecin</label>
+                <input class="form-control" name="medP" type="text" value="@drU.GetOracleValue(0)" />
+                <i class="fa fa-remove" onclick="ModifMed()"></i>
+            </div>
+        </div>
+    
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group no-margin">
+                <label for="field-7" class="control-label">Numero</label>
+                <input type="text" name="numP" class="form-control" value="@drU.GetOracleValue(1)" readonly/>                             
+            </div>
+        </div>
+    </div>
+                                                   

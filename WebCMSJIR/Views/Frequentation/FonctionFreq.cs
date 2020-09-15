@@ -9,43 +9,6 @@ namespace WebCMSJIR.Views.Frequentation
         OracleDataReader dr;
         int nb = 0;
 
-        //Attribue les ID de chaque fréquentation
-        public int IDFreq()
-        {
-            DBConnect c = new DBConnect();
-            OracleConnection conn = c.GetConnection();
-            conn.Open();
-            Int32 nb = 0;
-
-            OracleCommand req = new OracleCommand
-            {
-                CommandText = "SELECT COUNT(FREQMALA)+1  FROM FREQMALA_JDE ",
-                Connection = conn,
-                CommandType = CommandType.Text
-            };
-            try
-            {
-                // Exécution de la requête     
-                dr = req.ExecuteReader();
-                // On soumet la requête au serveur: tout s'est bien déroulé , la requête est exécutée    
-
-
-            }
-            catch (Exception ex)
-            {
-                // Une erreur est survenue: on ne valide pas la requête     
-
-                Console.WriteLine("<body><script >alert('Requête non effectuée !!\nErreur: '" + ex.Message + "'');</script></body>");
-            }
-            finally
-            {     // Libération des ressources     
-                req.Dispose();
-            }
-            dr.Read();
-            nb = dr.GetInt32(0);
-            return nb;
-        }
-
         public int CompterAgent(string agent)
         {
             DBConnectJDE c = new DBConnectJDE();
@@ -155,18 +118,17 @@ namespace WebCMSJIR.Views.Frequentation
         }
 
         //Affiche medecin avec ajax (Recherche Medecin)
-        public OracleDataReader GetMed(string med)
+        public OracleDataReader GetMed()
         {
             DBConnect c = new DBConnect();
             OracleConnection conn = c.GetConnection();
             conn.Open();
 
             OracleTransaction trans = conn.BeginTransaction();
-            if (med != null)
-            {
+            
                 OracleCommand cmd = new OracleCommand
                 {
-                    CommandText = "SELECT IDENTIFIANT, NOM, CODE_PREST FROM UTILISATEUR WHERE  IDENTIFIANT LIKE '%" + med + "%' OR NOM LIKE '%" + med + "%' OR CODE_PREST LIKE '%" + med + "%' AND CODE_PREST IS NOT NULL",
+                    CommandText = "SELECT CODMEDEC,CODMEDEC||' '||NOMMEDEC FROM MEDECIN WHERE CODE_PREST= 'M' AND STATUS= 'ACTIF' ORDER BY NOMMEDEC ASC",
                     Connection = conn,
                     CommandType = CommandType.Text
                 };
@@ -187,7 +149,6 @@ namespace WebCMSJIR.Views.Frequentation
                 {     // Libération des ressources     
                     cmd.Dispose();
                 }
-            }
             return dr;
         }
 
@@ -219,6 +180,45 @@ namespace WebCMSJIR.Views.Frequentation
             }
             finally
             {     // Libération des ressources     
+                cmd.Dispose();
+            }
+            return dr;
+        }
+       
+        //Affichage renseignement de frequentation à modifier
+        public OracleDataReader displayUpdateA(string matr, string type, string medecin)
+        {
+            IP ip = new IP();
+            recupIP recup = new recupIP();
+            string plageAdr = ip.adresseIp();
+            string codecms = recup.recupcodecms(plageAdr);
+
+            DBConnect c = new DBConnect();
+            OracleConnection conn = c.GetConnection();
+            conn.Open();
+            OracleTransaction trans = conn.BeginTransaction();
+            OracleCommand cmd = new OracleCommand
+            {
+                CommandText = "SELECT F.CODMEDE,F.NUMERO,F.NOM,F.MATR_NOUV,F.MATR,F.TYPAT FROM FREQMALA_JDE F WHERE to_char(DFREQ, 'dd/mm/yy')=to_char(sysdate, 'dd/mm/yy') AND HAMEDE IS NULL AND CODMEDE='"+medecin+"' AND TYPAT='"+type+"' AND MATR = '"+matr+"' OR MATR_NOUV = '"+matr+"' ",
+                Connection = conn,
+                CommandType = CommandType.Text
+            };
+            try
+            {
+                // Exécution de la requête     
+                dr = cmd.ExecuteReader();
+                // On soumet la requête au serveur: tout s'est bien déroulé , la requête est exécutée    
+                trans.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Une erreur est survenue: on ne valide pas la requête     
+                trans.Rollback();
+                Console.WriteLine("<body><script >alert('Requête non effectuée !!\nErreur: '" + ex.Message + "'');</script></body>");
+            }
+            finally
+            {
+                //Liberation des ressources
                 cmd.Dispose();
             }
             return dr;
@@ -292,6 +292,39 @@ namespace WebCMSJIR.Views.Frequentation
             return dr;
         }
 
+        public OracleDataReader AffichageDatenaisA(string matr)
+        {
+            DBConnect c = new DBConnect();
+            OracleConnection conn = c.GetConnection();
+            conn.Open();
+            OracleTransaction trans = conn.BeginTransaction();
+            OracleCommand cmd = new OracleCommand
+            {
+                CommandText = "SELECT to_char(DNAISS, 'DD/MM/YY') FROM AGENT_TEMP WHERE MATR_NOUV = '" + matr + "' OR MATR = '" + matr + "' ",
+                Connection = conn,
+                CommandType = CommandType.Text
+            };
+            try
+            {
+                // Exécution de la requête     
+                dr = cmd.ExecuteReader();
+                // On soumet la requête au serveur: tout s'est bien déroulé , la requête est exécutée    
+                trans.Commit();
+            }
+            catch(Exception ex)
+            {
+                // Une erreur est survenue: on ne valide pas la requête     
+                trans.Rollback();
+                Console.WriteLine("<body><script >alert('Requête non effectuée !!\nErreur: '" + ex.Message + "'');</script></body>");
+            }
+            finally
+            {
+                //Liberation des ressources
+                cmd.Dispose();
+            }
+            return dr;
+        }
+
         public int CompterAgentTemp(string matr)
         {
             DBConnect c = new DBConnect();
@@ -339,13 +372,26 @@ namespace WebCMSJIR.Views.Frequentation
             {
                 OracleCommand cmd = new OracleCommand
                 {
-                    CommandText = "SELECT a.YAAN8, a.YAOEMP , a.YAALPH , a.YADSC1 ,' ' , a.YAALPH1, CASE a.YATRDJ WHEN 0 THEN '-' ELSE  to_char(to_date(to_char(1900 + floor(a.YATRDJ/ 1000)),'YYYY') + mod(a.YATRDJ,1000) - 1, 'DD-MM-YYYY') END ," +
+                    /*CommandText = "SELECT a.YAAN8, a.YAOEMP , a.YAALPH , a.YADSC1 ,' ' , a.YAALPH1, CASE a.YATRDJ WHEN 0 THEN '-' ELSE  to_char(to_date(to_char(1900 + floor(a.YATRDJ/ 1000)),'YYYY') + mod(a.YATRDJ,1000) - 1, 'DD-MM-YYYY') END ," +
 
                     "b.ALADD1  FROM JIRDTA.F55EMPME a" +
 
                     " left join JIRDTA.F0116 b on ltrim(a.YAAN8)=ltrim(b.ALAN8) " +
 
-                    "WHERE  a.YAAN8 = '" + matr + "' OR a.YAOEMP= '" + matr + "'",
+                    "WHERE  a.YAAN8 = '" + matr + "' OR a.YAOEMP= '" + matr + "'",*/
+
+                    CommandText= "select a.YAAN8,a.YAOEMP,a.YAALPH,replace(a.YADSC1,'''',' '),a.YASEX,substr(a.YAALPH1,1,11)," +
+
+                    "case when lpad(a.YATRDJ, 6, 0) <> 0 then to_char(to_date(to_char(lpad(a.YATRDJ,6,0)+1900000),'YYYYDDD'),'dd/mm/yy')   end," +
+
+                    " b.ALADD1||b.ALADD2  " +
+
+                    " from JIRDTA.F55EMPME a " +
+
+                    " left join JIRDTA.F0116 b on ltrim(a.YAAN8)=ltrim(b.ALAN8) " +
+
+                    " where YAAN8='" + matr + "' OR a.YAOEMP= '" + matr + "'",
+
                     Connection = conn,
                     CommandType = CommandType.Text
                 };
@@ -371,13 +417,24 @@ namespace WebCMSJIR.Views.Frequentation
             {
                 OracleCommand cmd = new OracleCommand
                 {
-                    CommandText = "SELECT a.YAAN8, a.YAOEMP , a.YAALPH , a.YADSC1 , a.YASEX , a.YAALPH1, CASE a.YATRDJ WHEN 0 THEN '-' ELSE  to_char(to_date(to_char(1900 + floor(a.YATRDJ/ 1000)),'YYYY') + mod(a.YATRDJ,1000) - 1, 'DD-MM-YYYY') END," +
+                    /*CommandText = "SELECT a.YAAN8, a.YAOEMP , a.YAALPH , a.YADSC1 , a.YASEX , a.YAALPH1, CASE a.YATRDJ WHEN 0 THEN '-' ELSE  to_char(to_date(to_char(1900 + floor(a.YATRDJ/ 1000)),'YYYY') + mod(a.YATRDJ,1000) - 1, 'DD-MM-YYYY') END," +
 
                     "b.ALADD1  FROM JIRDTA.F55EMPME a" +
 
                     " left join JIRDTA.F0116 b on ltrim(a.YAAN8)=ltrim(b.ALAN8) " +
 
-                    " WHERE a.YADSC1 <> a.YAALPH AND a.YAAN8 = '" + matr + "' OR a.YAOEMP = '" + matr + "'",
+                    " WHERE a.YADSC1 <> a.YAALPH AND a.YAAN8 = '" + matr + "' OR a.YAOEMP = '" + matr + "'",*/
+                    CommandText= "select a.YAAN8,a.YAOEMP,a.YAALPH,replace(a.YADSC1,'''',' '),a.YASEX,substr(a.YAALPH1,1,11)," +
+
+                    "case when lpad(a.YATRDJ, 6, 0) <> 0 then to_char(to_date(to_char(lpad(a.YATRDJ,6,0)+1900000),'YYYYDDD'),'dd/mm/yy')   end," +
+
+                    "b.ALADD1||b.ALADD2  " +
+
+                    " from JIRDTA.F55EMPME a " +
+
+                    " left join JIRDTA.F0116 b on ltrim(a.YAAN8)=ltrim(b.ALAN8) " +
+
+                    " where a.YADSC1 <> a.YAALPH AND a.YAAN8='" + matr + "' OR a.YAOEMP = '" + matr + "'",
                     Connection = conn,
                     CommandType = CommandType.Text
                 };
@@ -519,7 +576,7 @@ namespace WebCMSJIR.Views.Frequentation
             OracleTransaction trans = conn.BeginTransaction();
             OracleCommand cmd = new OracleCommand
             {
-                CommandText = "SELECT COUNT(IDENTIFIANT) + 1 AS num FROM FREQMALA_JDE WHERE (IDENTIFIANT = '" + codeMed + "') AND (TO_DATE(DFREQ, 'DD/MM/YYYY') = TO_DATE(SYSDATE, 'DD/MM/YYYY'))",
+                CommandText = "SELECT COUNT(CODMEDE) + 1 AS num FROM FREQMALA_JDE WHERE (CODMEDE = '" + codeMed + "') AND (TO_DATE(DFREQ, 'DD/MM/YYYY') = TO_DATE(SYSDATE, 'DD/MM/YYYY'))",
                 Connection = conn,
                 CommandType = CommandType.Text
             };
@@ -552,7 +609,7 @@ namespace WebCMSJIR.Views.Frequentation
             OracleTransaction trans = conn.BeginTransaction();
             OracleCommand cmd = new OracleCommand
             {
-                CommandText = "SELECT CODE_ACT, LIBELLE FROM ACTIVITE ORDER BY LIBELLE ASC",
+                CommandText = "SELECT CODE_SOUS_ACT, LIBELLE FROM SOUS_ACTIVITE ORDER BY CODE_SOUS_ACT ASC",
                 Connection = conn,
                 CommandType = CommandType.Text
             };
@@ -651,7 +708,7 @@ namespace WebCMSJIR.Views.Frequentation
             OracleTransaction trans = conn.BeginTransaction();
             OracleCommand cmd = new OracleCommand
             {
-                CommandText = "SELECT CODE_PREST,LIB_PREST FROM PRESTAT WHERE CODE_ACT= '" + codeAct + "' ORDER BY LIB_PREST ASC",
+                CommandText = "SELECT CODE_PREST,LIB_PREST FROM PRESTAT WHERE CODE_SOUS_ACT= '" + codeAct + "' ORDER BY LIB_PREST ASC",
                 Connection = conn,
                 CommandType = CommandType.Text
             };
@@ -675,6 +732,381 @@ namespace WebCMSJIR.Views.Frequentation
             return dr;
         }
 
+        //Affichage Service
+
+        public OracleDataReader GetSce(string matr)
+
+        {
+
+            DBConnect c = new DBConnect();
+
+            OracleConnection conn = c.GetConnection();
+
+            conn.Open();
+
+            OracleTransaction trans = conn.BeginTransaction();
+
+            OracleCommand cmd = new OracleCommand
+
+            {
+
+                CommandText = "SELECT  SCE  FROM AGENT_TEMP WHERE MATR_NOUV = '" + matr + "' OR MATR = '" + matr + "' ",
+
+                Connection = conn,
+
+                CommandType = CommandType.Text
+
+            };
+
+            try
+
+            {
+
+                // Exécution de la requête    
+
+                dr = cmd.ExecuteReader();
+
+                // On soumet la requête au serveur: tout s'est bien déroulé , la requête est exécutée   
+
+                trans.Commit();
+
+            }
+
+            catch (Exception ex)
+
+            {
+
+                // Une erreur est survenue: on ne valide pas la requête    
+
+                trans.Rollback();
+
+                Console.WriteLine("<body><script >alert('Requête non effectuée !!\nErreur: '" + ex.Message + "'');</script></body>");
+
+            }
+
+            finally
+
+            {     // Libération des ressources    
+
+                cmd.Dispose();
+
+            }
+
+            return dr;
+
+        }
+
+        public OracleDataReader GetdirA(string matr)
+
+        {
+
+            DBConnect c = new DBConnect();
+
+            OracleConnection conn = c.GetConnection();
+
+            conn.Open();
+
+            OracleTransaction trans = conn.BeginTransaction();
+
+            OracleCommand cmd = new OracleCommand
+
+            {
+
+                CommandText = "SELECT  DIR FROM AGENT_TEMP WHERE MATR_NOUV = '" + matr + "' OR MATR = '" + matr + "' ",
+
+                Connection = conn,
+
+                CommandType = CommandType.Text
+
+            };
+
+            try
+
+            {
+
+                // Exécution de la requête    
+
+                dr = cmd.ExecuteReader();
+
+                // On soumet la requête au serveur: tout s'est bien déroulé , la requête est exécutée   
+
+                trans.Commit();
+
+            }
+
+            catch (Exception ex)
+
+            {
+
+                // Une erreur est survenue: on ne valide pas la requête    
+
+                trans.Rollback();
+
+                Console.WriteLine("<body><script >alert('Requête non effectuée !!\nErreur: '" + ex.Message + "'');</script></body>");
+
+            }
+
+            finally
+
+            {     // Libération des ressources    
+
+                cmd.Dispose();
+
+            }
+
+            return dr;
+
+        }
+
+        public OracleDataReader GetSceF(string matr)
+
+        {
+
+            DBConnect c = new DBConnect();
+
+            OracleConnection conn = c.GetConnection();
+
+            conn.Open();
+
+            OracleTransaction trans = conn.BeginTransaction();
+
+            OracleCommand cmd = new OracleCommand
+
+            {
+
+                CommandText = "SELECT  SCE  FROM AGENT_TEMP WHERE MATR_NOUV = '" + matr + "' OR MATR = '" + matr + "' ",
+
+                Connection = conn,
+
+                CommandType = CommandType.Text
+
+            };
+
+            try
+
+            {
+
+                // Exécution de la requête    
+
+                dr = cmd.ExecuteReader();
+
+                // On soumet la requête au serveur: tout s'est bien déroulé , la requête est exécutée   
+
+                trans.Commit();
+
+            }
+
+            catch (Exception ex)
+
+            {
+
+                // Une erreur est survenue: on ne valide pas la requête    
+
+                trans.Rollback();
+
+                Console.WriteLine("<body><script >alert('Requête non effectuée !!\nErreur: '" + ex.Message + "'');</script></body>");
+
+            }
+
+            finally
+
+            {     // Libération des ressources    
+
+                cmd.Dispose();
+
+            }
+
+            return dr;
+
+        }
+
+        public OracleDataReader GetdirF(string matr)
+
+        {
+
+            DBConnect c = new DBConnect();
+
+            OracleConnection conn = c.GetConnection();
+
+            conn.Open();
+
+            OracleTransaction trans = conn.BeginTransaction();
+
+            OracleCommand cmd = new OracleCommand
+
+            {
+
+                CommandText = "SELECT  DIR  FROM AGENT_TEMP WHERE MATR_NOUV = '" + matr + "' OR MATR = '" + matr + "' ",
+
+                Connection = conn,
+
+                CommandType = CommandType.Text
+
+            };
+
+            try
+
+            {
+
+                // Exécution de la requête    
+
+                dr = cmd.ExecuteReader();
+
+                // On soumet la requête au serveur: tout s'est bien déroulé , la requête est exécutée   
+
+                trans.Commit();
+
+            }
+
+            catch (Exception ex)
+
+            {
+
+                // Une erreur est survenue: on ne valide pas la requête    
+
+                trans.Rollback();
+
+                Console.WriteLine("<body><script >alert('Requête non effectuée !!\nErreur: '" + ex.Message + "'');</script></body>");
+
+            }
+
+            finally
+
+            {     // Libération des ressources    
+
+                cmd.Dispose();
+
+            }
+
+            return dr;
+
+        }
+
+        public OracleDataReader GetLibdirF(string matr)
+
+        {
+
+            DBConnect c = new DBConnect();
+
+            OracleConnection conn = c.GetConnection();
+
+            conn.Open();
+
+            OracleTransaction trans = conn.BeginTransaction();
+
+            OracleCommand cmd = new OracleCommand
+
+            {
+
+                CommandText = "SELECT  LIB_DIR FROM AGENT_TEMP WHERE MATR_NOUV = '" + matr + "' OR MATR = '" + matr + "' ",
+
+                Connection = conn,
+
+                CommandType = CommandType.Text
+
+            };
+
+            try
+
+            {
+
+                // Exécution de la requête    
+
+                dr = cmd.ExecuteReader();
+
+                // On soumet la requête au serveur: tout s'est bien déroulé , la requête est exécutée   
+
+                trans.Commit();
+
+            }
+
+            catch (Exception ex)
+
+            {
+
+                // Une erreur est survenue: on ne valide pas la requête    
+
+                trans.Rollback();
+
+                Console.WriteLine("<body><script >alert('Requête non effectuée !!\nErreur: '" + ex.Message + "'');</script></body>");
+
+            }
+
+            finally
+
+            {     // Libération des ressources    
+
+                cmd.Dispose();
+
+            }
+
+            return dr;
+
+        }
+
+        public OracleDataReader GetLibdirA(string matr)
+
+        {
+
+            DBConnect c = new DBConnect();
+
+            OracleConnection conn = c.GetConnection();
+
+            conn.Open();
+
+            OracleTransaction trans = conn.BeginTransaction();
+
+            OracleCommand cmd = new OracleCommand
+
+            {
+
+                CommandText = "SELECT  LIB_DIR FROM AGENT_TEMP WHERE MATR_NOUV = '" + matr + "' OR MATR = '" + matr + "' ",
+
+                Connection = conn,
+
+                CommandType = CommandType.Text
+
+            };
+
+            try
+
+            {
+
+                // Exécution de la requête    
+
+                dr = cmd.ExecuteReader();
+
+                // On soumet la requête au serveur: tout s'est bien déroulé , la requête est exécutée   
+
+                trans.Commit();
+
+            }
+
+            catch (Exception ex)
+
+            {
+
+                // Une erreur est survenue: on ne valide pas la requête    
+
+                trans.Rollback();
+
+                Console.WriteLine("<body><script >alert('Requête non effectuée !!\nErreur: '" + ex.Message + "'');</script></body>");
+
+            }
+
+            finally
+
+            {     // Libération des ressources    
+
+                cmd.Dispose();
+
+            }
+
+            return dr;
+
+        }
+
+
         //Liste les medecins (select)
         public OracleDataReader ListeMed(string codePrest)
         {
@@ -684,7 +1116,7 @@ namespace WebCMSJIR.Views.Frequentation
             OracleTransaction trans = conn.BeginTransaction();
             OracleCommand cmd = new OracleCommand
             {
-                CommandText = "SELECT IDENTIFIANT FROM UTILISATEUR WHERE CODE_PREST= '" + codePrest + "'AND STATUT= 'Actif' ORDER BY IDENTIFIANT ASC",
+                CommandText= "SELECT CODMEDEC,CODMEDEC||' '||NOMMEDEC FROM MEDECIN WHERE CODE_PREST= '" + codePrest + "'AND STATUS= 'ACTIF' ORDER BY NOMMEDEC ASC",
                 Connection = conn,
                 CommandType = CommandType.Text
             };
@@ -711,6 +1143,11 @@ namespace WebCMSJIR.Views.Frequentation
         //Affiche liste d'attentes des fréquentations non traitées des Médecins 
         public OracleDataReader FreqAttente()
         {
+            IP ip = new IP();
+            recupIP recup = new recupIP();
+            string plageAdr = ip.adresseIp();
+            string codecms = recup.recupcodecms(plageAdr);
+
             DBConnect c = new DBConnect();
             OracleConnection conn = c.GetConnection();
             conn.Open();
@@ -718,7 +1155,10 @@ namespace WebCMSJIR.Views.Frequentation
 
             OracleCommand cmd = new OracleCommand
             {
-                CommandText = "SELECT F.FREQMALA, F.IDENTIFIANT, F.NUMERO, F.NOM, F.AGE, F.SEXE, CASE P.CODE_ACT WHEN '101' THEN 'Consultation medecin' WHEN '201' THEN 'Sage femme' WHEN '201' THEN 'Consultation dentiste' END, P.CODE_PREST FROM FREQMALA_JDE F, PRESTAT P WHERE F.DFREQ IS NOT NULL AND F.HAMEDE IS NULL AND (TO_DATE(F.DFREQ, 'DD/MM/YYYY') = TO_DATE(SYSDATE, 'DD/MM/YYYY')) AND P.CODE_PREST = F.CODE_PREST",
+                CommandText = "SELECT F.HACMS,F.CODMEDE,F.NUMERO,F.NOM,F.SEXE,CASE P.CODE_SOUS_ACT WHEN '101' THEN 'Consultation medecin' WHEN '201' THEN 'Sage femme' WHEN '201' THEN 'Consultation dentiste' END,F.MATR_NOUV,F.MATR,M.NOMMEDEC FROM FREQMALA_JDE F,PRESTAT P,MEDECIN M WHERE F.DFREQ IS NOT NULL" +
+
+                " AND F.HAMEDE IS NULL AND (to_char(F.DFREQ, 'DD/MM/YYYY') = to_char(SYSDATE, 'DD/MM/YYYY')) AND P.CODE_PREST = F.CODE_PREST AND F.CODMEDE = M.CODMEDEC AND F.CODECMS ='" + codecms + "' ",
+
                 Connection = conn,
                 CommandType = CommandType.Text
             };
@@ -742,6 +1182,9 @@ namespace WebCMSJIR.Views.Frequentation
             return dr;
         }
 
+        //Libelle DIR Agent
+
+        
         public OracleDataReader GetPat(string pat)
         {
             DBConnect c = new DBConnect();

@@ -80,23 +80,21 @@ namespace WebCMSJIR.Controllers
             ViewBag.Message = codeMed;
             return View();
         }
-        public IActionResult AjoutFreq(string ste, string typeSte, string matr, string nomAG, string SA, int etab, string nomPat, int typePat, string dateNais, int agePat, char sexe, string adr, int numero, string natConsul, string codeMed, string act, string prest)
+        public IActionResult AjoutFreq(string ste, string typeSte, string matPat, string nomAG, string SA, int etab, string nomPat, int typePat, string dateNais, int agePat, char sexe, string adr, int numero, string natConsul, string codeMed, string act, string prest, string sce, string dir, string aMatrPat)
         {
             DBConnect c = new DBConnect();
             OracleConnection conn = c.GetConnection();
             conn.Open();
-
-            FonctionFreq f = new FonctionFreq();
-            int id = f.IDFreq();
-            int ide = id + 100;
+            FonctionFreq fFreq = new FonctionFreq();
+            int nb = fFreq.CompteType(ste);
 
             OracleTransaction trans = conn.BeginTransaction();
-            string type = "INTERNE";
-            if (typeSte.Equals(type))
+            //string type = "INTERNE";
+            if (nb==1)
             {
                 OracleCommand cmd = new OracleCommand
                 {
-                    CommandText = "INSERT INTO FREQMALA_JDE(FREQMALA, NUMERO , MATR , ETAB , IDENTIFIANT  , STE , TYPE_CLI , TYPAT , CODE_ACT , CODE_PREST , NAT_CONSULT , SA , NOM , DNAIS , ADRESSE, SEXE, AGE, DFREQ ) VALUES('" + ide + "' , '" + numero + "' , '" + matr + "' ,'" + etab + "', '" + codeMed + "' , '" + ste + "' , '" + typeSte + "' , '" + typePat + "', '" + act + "' , '" + prest + "' , '" + natConsul + "' , '" + SA + "' , '" + nomPat + "',TO_DATE('" + dateNais + "', 'DD/MM/YYYY') , '" + adr + "' , '" + sexe + "', '" + agePat + "' , sysdate)",
+                    CommandText = "INSERT INTO FREQMALA_JDE(NUMERO , MATR_NOUV , MATR, ETAB , CODMEDE  , STE , TYPE_CLI , TYPAT , CODE_SOUS_ACT , CODE_PREST , NAT_CONSULT , NOUV_NUM_SA , NOM , DNAIS , ADRESSE, SEXE, DFREQ , SERVICE, DIRECTION, HACMS) VALUES('" + numero + "' , '" + matPat + "' ,'" + aMatrPat + "', '" + etab + "', '" + codeMed + "' , '" + ste + "' , '" + typeSte + "' , '" + typePat + "', '" + act + "' , '" + prest + "' , '" + natConsul + "' , '" + SA + "' , '" + nomPat + "',TO_DATE('" + dateNais + "', 'DD/MM/YYYY') , '" + adr + "' , '" + sexe + "' , to_char(sysdate, 'dd/mm/yy'), '" + sce + "', '"+ dir +"', to_char(sysdate, 'hh24:mi:ss'))",
                     Connection = conn,
                     CommandType = CommandType.Text
                 };
@@ -120,35 +118,101 @@ namespace WebCMSJIR.Controllers
                     cmd.Dispose();
                 }
             }
+            return RedirectToAction("Index", "Frequentation");
+        }
+
+        public IActionResult AfficherAgent(string agent)
+        {
+            if(agent != null)
+            {
+                FonctionFreq fFreq = new FonctionFreq();
+                int nbA = fFreq.CompterAgent(agent);
+                if (nbA != 0)
+                {
+                    ViewBag.Message = agent;
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Agent", "Trash");
+                }
+
+            }
             else
             {
+                return RedirectToAction("Fin", "Frequentation");
+            }
+        }
+
+        public IActionResult AfficherModif(string matr, string tpat, string med)
+        {
+            ViewBag.Message = matr;
+            ViewBag.Type = tpat;
+            ViewBag.Medecin = med;
+            return View();
+        }
+
+        public IActionResult NouvChamp()
+        {
+            return View();
+        }
+
+        /*public IActionResult UpdatePatient(string nomP, string Amatr, string Nmatr, string typeP, string numP, string medP)
+        {
+            DBConnect c = new DBConnect();
+            OracleConnection conn = c.GetConnection();
+            conn.Open();
+            OracleTransaction trans = conn.BeginTransaction();
+            //string type = "INTERNE";
+         
                 OracleCommand cmd = new OracleCommand
                 {
-                    CommandText = "INSERT INTO FREQMALA_JDE(FREQMALA, NUMERO , IDENTIFIANT , STE , TYPE_CLI , CODE_ACT , CODE_PREST , NAT_CONSULT, NOM, DNAIS , ADRESSE, SEXE, AGE, DFREQ ) VALUES('" + id + "' , '" + numero + "' , '" + codeMed + "' , '" + ste + "' , '" + typeSte + "' , '" + act + "' , '" + prest + "' , '" + natConsul + "' , '" + nomPat + "', TO_CHAR(TO_DATE('" + dateNais + "', 'DD/MM/YYYY'), 'DD/MM/YYYY') , '" + adr + "', '" + sexe + "', '" + agePat + "',  sysdate)",
+                    CommandText = "SELECT * FROM FREQMALA_JDE",
                     Connection = conn,
                     CommandType = CommandType.Text
                 };
-                try
-                {
-                    // Exécution de la requête     
-                    dr = cmd.ExecuteReader();
-                    // On soumet la requête au serveur: tout s'est bien déroulé , la requête est exécutée    
-                    trans.Commit();
-                    TempData["text"] = "Insertion reussie";
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    // Une erreur est survenue: on ne valide pas la requête     
-                    trans.Rollback();
-                    TempData["text"] = "Requete non effectue \nErreur: " + ex.Message;
-                }
-                finally
-                {     // Libération des ressources     
-                    cmd.Dispose();
-                }
+            try
+            {
+                // Exécution de la requête     
+                dr = cmd.ExecuteReader();
+                // On soumet la requête au serveur: tout s'est bien déroulé , la requête est exécutée    
+                trans.Commit();
+                TempData["text"] = "Insertion reussie";
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                // Une erreur est survenue: on ne valide pas la requête     
+                trans.Rollback();
+                TempData["text"] = "Requete non effectuee \nErreur: " + ex.Message;
+            }
+            finally
+            {     // Libération des ressources     
+                cmd.Dispose();
             }
             return RedirectToAction("Index", "Frequentation");
+        }*/
+        public IActionResult AfficheMed(string med)
+        {
+            if (med != null)
+            {
+                FonctionFreq fFreq = new FonctionFreq();
+                int nbM = fFreq.CompterMed(med);
+                if (nbM != 0)
+                {
+                    ViewBag.Message = med;
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Medecin", "Trash");
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("Fin", "Frequentation");
+            }
         }
 
     }
